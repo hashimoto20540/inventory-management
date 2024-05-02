@@ -9,10 +9,6 @@ $sql = "CREATE TABLE IF NOT EXISTS items(
     quantity INT
 )";
 
-$id_initialization = "ALTER TABLE items AUTO_INCREMENT = 1";
-$statement = $db->prepare($id_initialization);
-$statement->execute();
-
 // SQLの実行
 $db->exec($sql);
 ?>
@@ -56,22 +52,5 @@ $db->exec($sql);
         }
         ?>
     </table>
-    
-    <script>
-        function getLastID() {
-            // データベースの最後のIDを取得
-            <?php
-            $last_id_sql = "SELECT MAX(id) AS last_id FROM items";
-            $last_id_statement = $db->prepare($last_id_sql);
-            $last_id_statement->execute();
-            $last_id_row = $last_id_statement->fetch(PDO::FETCH_ASSOC);
-            $last_id = $last_id_row['last_id'];
-            ?>
-            
-            // 隠しフィールドに最後のIDを設定
-            document.getElementById("last_id").value = <?php echo $last_id; ?>;
-        }
-    </script>
-
 </body>
 </html>
