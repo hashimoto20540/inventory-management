@@ -3,14 +3,9 @@
 $name = $_POST['name'];
 $mail = $_POST['mail'];
 $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-$dsn = "mysql:host=localhost;dbname=inventory_management;charset=utf8";
 $username = "root";
 $password = "";
-// try {
-//     $dbh = new PDO($dsn, $username, $password);
-// } catch (PDOException $e) {
-//     $msg = $e->getMessage();
-// }
+
 $db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
 
 // テーブル作成のSQL

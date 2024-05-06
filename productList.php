@@ -9,7 +9,7 @@ if (!isset($_SESSION['id'])) { // ログインしていない場合
     exit; // リダイレクト後、スクリプトを終了
 }
 
-// データベース接続
+// データベース接続 PDO(PHP Data Objects), PHPが提供するデータベースアクセスのための共通インターフェース
 $db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
 
 // テーブル作成のSQL

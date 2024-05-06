@@ -30,5 +30,5 @@ OS：Wndows11
 以下のサイトを参考に作成<br>
 商品在庫管理<br>
 https://jp-seemore.com/web/7537/#toc3
-PHPログイン機能（WIP）<br>
+PHPログイン機能<br>
 https://qiita.com/ryo-futebol/items/5fb635199acc2fcbd3f
