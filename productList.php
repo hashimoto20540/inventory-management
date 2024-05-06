@@ -2,9 +2,9 @@
 // セッション開始
 session_start();
 
-// ログイン状態の確認
+// ログイン状態の確認 isset() は、変数が存在しているかどうかをチェック
 if (!isset($_SESSION['id'])) { // ログインしていない場合
-    // ログインページにリダイレクト
+    // ログインページにリダイレクト header() 関数は、HTTPヘッダーの「Location」を設定
     header("Location: login_form.php");
     exit; // リダイレクト後、スクリプトを終了
 }

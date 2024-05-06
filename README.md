@@ -9,7 +9,8 @@
 ログイン機能を実装しました。<br>
 ・ユーザー登録画面<br>
 ・ログイン処理<br>
-・ホーム画面
+・ホーム画面<br>
+・商品管理画面にセッションの追加
 
 ## 使用技術<br>
 ### 使用言語
@@ -32,3 +33,14 @@ OS：Wndows11
 https://jp-seemore.com/web/7537/#toc3
 PHPログイン機能<br>
 https://qiita.com/ryo-futebol/items/5fb635199acc2fcbd3f
+
+
+## ページの設定<br>
+新規会員登録<br>
+http://localhost/inventory-management/signup.php<br><br>
+
+ログイン画面<br>
+http://localhost/inventory-management/login_form.php<br>
+
+## 遷移図<br>
+https://docs.google.com/spreadsheets/d/124QxFUf24I2REP_Xs3qHbswRSgVkc-ljpKWcY_aPk34/edit#gid=0

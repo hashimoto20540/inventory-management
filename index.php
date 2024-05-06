@@ -6,6 +6,13 @@ session_start([
     'cookie_lifetime' => $cookie_lifetime,
 ]);
 
+// ログイン状態の確認 isset() は、変数が存在しているかどうかをチェック
+if (!isset($_SESSION['id'])) { // ログインしていない場合
+    // ログインページにリダイレクト header() 関数は、HTTPヘッダーの「Location」を設定
+    header("Location: login_form.php");
+    exit; // リダイレクト後、スクリプトを終了
+}
+
 $username = $_SESSION['name'];
 if (isset($_SESSION['id'])) {//ログインしているとき
     $msg = 'こんにちは' . htmlspecialchars($username, \ENT_QUOTES, 'UTF-8') . 'さん';
