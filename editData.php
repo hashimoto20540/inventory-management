@@ -1,4 +1,14 @@
 <?php
+// セッション開始
+session_start();
+
+// ログイン状態の確認
+if (!isset($_SESSION['id'])) { // ログインしていない場合
+    // ログインページにリダイレクト
+    header("Location: login_form.php");
+    exit; // リダイレクト後、スクリプトを終了
+}
+
 // データベース接続
 $db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
 
