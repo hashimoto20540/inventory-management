@@ -1,12 +1,14 @@
 # inventory-management
 
 ## 概要<br>
-商品の在庫管理をできるようにしました。<br>
+XAMPPのhtdocsディレクトリー（C:\xampp\htdocs）にinventory-managementフォルダを配置すると動作します。<br>
+
+### 商品の在庫管理<br>
 ・商品の一覧を確認<br>
 ・商品を登録<br>
 ・商品を編集<br>
 
-ログイン機能を実装しました。<br>
+### ログイン機能<br>
 ・ユーザー登録画面<br>
 ・ログイン処理<br>
 ・ホーム画面<br>
@@ -30,14 +32,14 @@ OS：Wndows11
 ## 作成方法<br>
 以下のサイトを参考に作成<br>
 商品在庫管理<br>
-https://jp-seemore.com/web/7537/#toc3
-PHPログイン機能<br>
+https://jp-seemore.com/web/7537/#toc3<br>
+ログイン機能<br>
 https://qiita.com/ryo-futebol/items/5fb635199acc2fcbd3f
 
 
-## ページの設定<br>
+## ページのURL<br>
 新規会員登録<br>
-http://localhost/inventory-management/signup.php<br><br>
+http://localhost/inventory-management/signup.php<br>
 
 ログイン画面<br>
 http://localhost/inventory-management/login_form.php<br>
