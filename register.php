@@ -33,7 +33,7 @@ $member = $stmt->fetch();
 
 if ($member['mail'] === $mail) {
     $msg = '同じメールアドレスが存在します。';
-    $link = '<a href="signup.php">戻る</a>';
+    $link = '<a href="signup.php" class="internal-link">戻る</a>';
 } else {
     //登録されていなければinsert 
     $sql_mail = "INSERT INTO users(name, mail, pass) VALUES (:name, :mail, :pass)";
@@ -43,9 +43,24 @@ if ($member['mail'] === $mail) {
     $stmt->bindValue(':pass', $pass);
     $stmt->execute();
     $msg = '会員登録が完了しました';
-    $link = '<a href="login_form.php">ログインページ</a>';
+    $link = '<a href="login_form.php" class="internal-link">ログインページ</a>';
 }
 ?>
 
-<h1><?php echo $msg; ?></h1><!--メッセージの出力-->
-<?php echo $link; ?>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新規アカウント登録</title>
+<link rel="stylesheet" type="text/css" href="css/login.css">
+</head>
+<body>
+<header class="login__header">
+</header>
+<div class="layout-base__body">
+	<h1 class="form__h1-2"><?php echo $msg; ?></h1>
+	<p class="wrapper-internal-link--center"><?php echo $link; ?></p>
+</div>
+</body>
+</html>

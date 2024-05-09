@@ -21,12 +21,27 @@ if (password_verify($_POST['pass'], $member['pass'])) {
     $_SESSION['id'] = $member['id'];
     $_SESSION['name'] = $member['name'];
     $msg = 'ログインしました。';
-    $link = '<a href="index.php">ホーム</a>';
+    $link = '<a href="index.php" class="internal-link">ホーム</a>';
 } else {
     $msg = 'メールアドレスもしくはパスワードが間違っています。';
-    $link = '<a href="login_form.php">戻る</a>';
+    $link = '<a href="login_form.php" class="internal-link">戻る</a>';
 }
 ?>
 
-<h1><?php echo $msg; ?></h1>
-<?php echo $link; ?>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ログイン完了</title>
+<link rel="stylesheet" type="text/css" href="css/login.css">
+</head>
+<body>
+<header class="login__header">
+</header>
+<div class="layout-base__body">
+	<h1 class="form__h1-2"><?php echo $msg; ?></h1>
+	<p class="wrapper-internal-link--center"><?php echo $link; ?></p>
+</div>
+</body>
+</html>
