@@ -44,5 +44,8 @@ http://localhost/inventory-management/signup.php<br>
 ログイン画面<br>
 http://localhost/inventory-management/login_form.php<br>
 
-## 遷移図<br>
+## 遷移図・デザイン<br>
+https://www.figma.com/file/d2Px5R2JZrS5hS5YZ14Vq0/%E5%9C%A8%E5%BA%AB%E7%AE%A1%E7%90%86%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0?type=design&node-id=0%3A1&mode=design&t=nMkhcnabUZ4Xdbc5-1
+
+### 旧遷移図<br>
 https://docs.google.com/spreadsheets/d/124QxFUf24I2REP_Xs3qHbswRSgVkc-ljpKWcY_aPk34/edit#gid=0
