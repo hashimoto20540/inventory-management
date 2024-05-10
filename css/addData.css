@@ -1,0 +1,52 @@
+.h2_subtitle {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.add-data__wrapper-name-img {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-data__wrapper-name {
+  width: 70%;
+}
+
+.add-data__wrapper-img-edit {
+  width: calc(30% - 1em);
+  border-radius: 5px;
+	border: solid rgb(0, 95, 229) 2px;
+  margin-bottom: 1em;
+  height: 101px;
+  cursor: pointer;
+  position: relative;
+}
+
+.add-data__input-text-name {
+  width: calc(100% - 3em);
+	padding: 1em 1.5em;
+	border-radius: 5px;
+	border: solid rgb(0, 95, 229) 2px;
+}
+.add-data__data__wrapper-input-img {
+
+}
+
+.add-data__input-img {
+  object-fit: cover;
+  width: 100%;
+  height: 101px;
+  position: relative;
+  z-index: -2;
+}
+
+.add-data__img-edit-button {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  background-color: white;
+  bottom: 0;
+  z-index: -1;
+  font-size: 0.9em;
+  color: rgb(0, 95, 229);;
+}

@@ -56,3 +56,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <a href="productList.php" class="button">戻る</a>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品登録</title>
+<link rel="stylesheet" type="text/css" href="css/login.css">
+<link rel="stylesheet" type="text/css" href="css/addData.css">
+</head>
+<body>
+<form action="login.php" method="post">
+<div class="layout-base__body">
+	<h1>商品を登録</h1>
+	<h2 class="h2_subtitle">詳細</h2>
+    <div class="add-data__wrapper-name-img">
+			<div class="add-data__wrapper-name">
+				<div class="form__wrapper-input">
+					<input type="text" name="name" required class="add-data__input-text-name" placeholder="名前">
+				</div>
+				<div class="form__wrapper-input">
+					<input type="text" name="furigana" required class="add-data__input-text-name" placeholder="フリガナ">
+				</div>
+			</div>
+			<div class="add-data__wrapper-img-edit">
+				<div class="add-data__data__wrapper-input-img">
+					<img class="add-data__input-img" src="https://placehold.jp/300x200.png" />
+				</div>
+				<div class="add-data__img-edit-button">編集</div>
+			</div>
+    </div>
+
+	<input type="submit" value="ログイン" class="form__botton">
+</div>
+
+</form>
+</body>
+</html>
