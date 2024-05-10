@@ -8,22 +8,60 @@ session_start([
 
 // ログイン状態の確認 isset() は、変数が存在しているかどうかをチェック
 if (!isset($_SESSION['id'])) { // ログインしていない場合
-    // ログインページにリダイレクト header() 関数は、HTTPヘッダーの「Location」を設定
-    header("Location: login_form.php");
-    exit; // リダイレクト後、スクリプトを終了
+	// ログインページにリダイレクト header() 関数は、HTTPヘッダーの「Location」を設定
+	header("Location: login_form.php");
+	exit; // リダイレクト後、スクリプトを終了
 }
 
 $username = $_SESSION['name'];
-if (isset($_SESSION['id'])) {//ログインしているとき
-    $msg = 'こんにちは' . htmlspecialchars($username, \ENT_QUOTES, 'UTF-8') . 'さん';
-    $link_productList = '<a href="productList.php">商品管理ページへ</a>';
-    $link_login_out = '<a href="logout.php">ログアウト</a>';
-} else { //ログインしていない時
-    $msg = 'ログインしていません';
-    $link_login_out = '<a href="login_form.php">ログイン</a>';
-}
+$msg = 'こんにちは' . htmlspecialchars($username, \ENT_QUOTES, 'UTF-8') . 'さん';
+$link_productList = '<a href="productList.php">商品管理ページへ</a>';
+$link_logout = '<a href="logout.php">ログアウト</a>';
 
 ?>
-<h1><?php echo $msg; ?></h1>
-<?php echo $link_productList; ?><br>
-<?php echo $link_login_out; ?>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>ホーム</title>
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<script src="javascript/index.js" defer></script>
+</head>
+<body>
+	<header class="dashboard__header">
+		<div class="menu-toggle" id="menu-toggle">
+			<!-- ハンバーガーメニューアイコン -->
+			<span class="bar"></span>
+			<span class="bar"></span>
+			<span class="bar"></span>
+		</div>
+		<h1>ホーム</h1>
+		<div class="flex-grow"></div>
+		<div class="header--logout"><?php echo $link_logout; ?></div>
+	</header>
+
+	<div class="dashboard__container">
+		<nav class="dashboard__sidebar" id="sidebar">
+			<ul>
+					<li>
+						<img src="image/home_icon.svg" alt="inventory_icon" width="24" height="24" fill="rgb(0, 0, 0)">						
+						<a href="index.php">ホーム</a>
+					</li>
+					<li>
+						<img src="image/inventory_icon.svg" alt="inventory_icon" width="24" height="24" fill="rgb(0, 0, 0)">
+						<a href="productList.php">商品</a>
+					</li>
+			</ul>
+		</nav>
+
+		<main class="content">
+			<div class="information-bar">
+				<div class="content__information-box">名前 <span class="content__information-box--bold"><?php echo $username; ?>さん</span></div>
+				<div class="content__information-box">日付 <span id="today-date" class="content__information-box--bold"></span></div>
+			</div>
+			<h2>さっそくはじめましょう</h2>
+			
+		</main>
+	</div>
+</body>
+</html>

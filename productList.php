@@ -34,8 +34,8 @@ $db->exec($sql);
 
     <h2>在庫管理システム</h2>
     <form action="addData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>" method="GET">
-    <input type="hidden" id="last_id" name="last_id" value="">
-        <input type="submit" value="商品登録" onclick="getLastID()">
+    	<input type="hidden" id="last_id" name="last_id" value="">
+      <input type="submit" value="商品登録" onclick="getLastID()">
     </form>
     <table border="1">
         <tr>
@@ -63,5 +63,88 @@ $db->exec($sql);
         ?>
     </table>
     <a href="index.php">ホーム</a>
+</body>
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>商品一覧</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+		<link rel="stylesheet" type="text/css" href="css/productList.css">
+    <script src="javascript/index.js" defer></script>
+</head>
+<body>
+<form action="addData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>" method="GET">
+<input type="hidden" id="last_id" name="last_id" value="">
+	<header class="dashboard__header">
+		<div class="menu-toggle" id="menu-toggle">
+			<!-- ハンバーガーメニューアイコン -->
+			<span class="bar"></span>
+			<span class="bar"></span>
+			<span class="bar"></span>
+		</div>
+		<h1>商品</h1>
+	</header>
+
+	<div class="dashboard__container">
+		<nav class="dashboard__sidebar" id="sidebar">
+			<ul>
+				<li>
+					<img src="image/home_icon.svg" alt="inventory_icon" width="24" height="24" fill="rgb(0, 0, 0)">						
+					<a href="index.php">ホーム</a>
+				</li>
+				<li>
+					<img src="image/inventory_icon.svg" alt="inventory_icon" width="24" height="24" fill="rgb(0, 0, 0)">
+					<a href="productList.php">商品</a>
+				</li>
+			</ul>
+		</nav>
+
+		<main class="content">
+			<div class="information-bar product-list__information-bar">
+				<input class="content__information-box product-list__information-box" placeholder="名前、説明、SKU、GTINのいずれかで検索">
+				</input>	
+				<div class="flex-grow"></div>
+      	<input type="submit" value="商品を登録" onclick="getLastID()" class="content__information-box product-list__register-button">
+			</div>
+			<table border="1">
+        <tr>
+            <th>ID</th>
+            <th>商品名</th>
+						<th>カテゴリー</th>
+            <th>在庫数</th>
+            <th>価格</th>
+						<th></th>
+        </tr>
+        <?php
+        // 在庫情報の表示
+        $sql = "SELECT * FROM items";
+        $statement = $db->prepare($sql);
+        $statement->execute();
+
+        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+        ?>
+        <tr>
+            <td><?php echo htmlspecialchars($row['id']); ?></td>
+            <td><?php echo htmlspecialchars($row['name']); ?></td>
+						<td></td>
+            <td><?php echo htmlspecialchars($row['quantity']); ?></td>
+						<td></td>
+            <td><a href="editData.php?id=<?php echo htmlspecialchars($row['id']); ?>&quantity=<?php echo htmlspecialchars($row['quantity']); ?>&name=<?php echo htmlspecialchars($row['name']); ?>" class="button">編集</a></td>
+        </tr>
+        <?php
+        }
+        ?>
+			</table>
+			
+		</main>
+	</div>
+</form>
 </body>
 </html>

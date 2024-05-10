@@ -1,0 +1,58 @@
+.product-list__information-bar {
+  display: flex;
+}
+
+.product-list__information-box {
+  display: flex;
+}
+
+.product-list__search {
+  border: none;
+}
+
+.product-list__register-button {
+  margin-right: 0;
+  background-color: rgb(0, 106, 255);
+  color: #ffffff;
+}
+
+/* テーブル全体のスタイリング */
+table {
+  width: 100%; /* テーブルを幅いっぱいにする */
+  border-collapse: collapse; /* セルの間の隙間をなくす */
+  margin-top: 20px; /* 上に少し余白を追加 */
+}
+
+/* ヘッダーのスタイリング */
+table th {
+  color: #333; /* ヘッダーの文字色 */
+  padding: 10px; /* パディングを追加 */
+  text-align: left; /* テキストを左揃え */
+  border-bottom: 2px solid #ddd; /* ヘッダーの下にボーダー */
+}
+
+/* テーブルのボディ（データ行）のスタイリング */
+table td {
+  padding: 10px; /* パディングを追加 */
+  border-bottom: 1px solid #ddd; /* ボーダー */
+}
+
+/* 行のホバー効果 */
+table tr:hover {
+  background-color: #f9f9f9; /* ホバー時の背景色 */
+}
+
+/* 編集ボタンのスタイリング */
+.button {
+  background-color: #3498db; /* ボタンの背景色（青） */
+  color: white; /* テキストの色 */
+  text-decoration: none; /* テキスト装飾なし */
+  padding: 8px 12px; /* パディングを追加 */
+  border-radius: 5px; /* ボタンの角を丸く */
+  border: none; /* ボーダーを削除 */
+  transition: background-color 0.3s; /* ホバー時のスムーズな変化 */
+}
+
+.button:hover {
+  background-color: #2980b9; /* ホバー時のボタンの色 */
+}
