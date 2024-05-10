@@ -26,58 +26,12 @@ $db->exec($sql);
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>在庫管理システム</title>
-</head>
-<body>
-
-    <h2>在庫管理システム</h2>
-    <form action="addData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>" method="GET">
-    	<input type="hidden" id="last_id" name="last_id" value="">
-      <input type="submit" value="商品登録" onclick="getLastID()">
-    </form>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>商品名</th>
-            <th>在庫数</th>
-            <th></th>
-        </tr>
-        <?php
-        // 在庫情報の表示
-        $sql = "SELECT * FROM items";
-        $statement = $db->prepare($sql);
-        $statement->execute();
-
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-        ?>
-        <tr>
-            <td><?php echo htmlspecialchars($row['id']); ?></td>
-            <td><?php echo htmlspecialchars($row['name']); ?></td>
-            <td><?php echo htmlspecialchars($row['quantity']); ?></td>
-            <td><a href="editData.php?id=<?php echo htmlspecialchars($row['id']); ?>&quantity=<?php echo htmlspecialchars($row['quantity']); ?>&name=<?php echo htmlspecialchars($row['name']); ?>" class="button">編集</a></td>
-        </tr>
-        <?php
-        }
-        ?>
-    </table>
-    <a href="index.php">ホーム</a>
-</body>
-</html>
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
     <meta charset="UTF-8">
     <title>商品一覧</title>
     <link rel="stylesheet" type="text/css" href="css/index.css">
 		<link rel="stylesheet" type="text/css" href="css/productList.css">
     <script src="javascript/index.js" defer></script>
+		<script src="javascript/productList.js" defer></script>
 </head>
 <body>
 <form action="addData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>" method="GET">
@@ -130,13 +84,15 @@ $db->exec($sql);
 
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
         ?>
-        <tr>
-            <td><?php echo htmlspecialchars($row['id']); ?></td>
+        <tr data-href="editData.php?id=<?php echo htmlspecialchars($row['id']); ?>&quantity=<?php echo htmlspecialchars($row['quantity']); ?>&name=<?php echo htmlspecialchars($row['name']); ?>"  title="商品編集ページに移動します">
+					  <td><?php echo htmlspecialchars($row['id']); ?></td>
             <td><?php echo htmlspecialchars($row['name']); ?></td>
 						<td></td>
             <td><?php echo htmlspecialchars($row['quantity']); ?></td>
 						<td></td>
-            <td><a href="editData.php?id=<?php echo htmlspecialchars($row['id']); ?>&quantity=<?php echo htmlspecialchars($row['quantity']); ?>&name=<?php echo htmlspecialchars($row['name']); ?>" class="button">編集</a></td>
+            <td>
+							<img src="image/more_horiz_icon.svg" alt="inventory_icon" width="24" height="24" >
+						</td>
         </tr>
         <?php
         }
@@ -148,3 +104,8 @@ $db->exec($sql);
 </form>
 </body>
 </html>
+
+
+
+
+
