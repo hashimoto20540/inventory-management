@@ -22,14 +22,20 @@
   position: relative;
 }
 
-.add-data__input-text-name {
+.add-data__input {
   width: calc(100% - 3em);
 	padding: 1em 1.5em;
 	border-radius: 5px;
 	border: solid rgb(0, 95, 229) 2px;
 }
-.add-data__data__wrapper-input-img {
 
+.add-data__input:focus-within {
+	border: solid rgb(0, 95, 229) 3px;  /* フォーカス時の枠線の色 */
+	outline: none;  /* デフォルトのアウトラインを非表示にする */
+}
+
+.add-data__input--maxwidth {
+  width: calc(100% - 3.3em);
 }
 
 .add-data__input-img {
@@ -49,4 +55,69 @@
   z-index: -1;
   font-size: 0.9em;
   color: rgb(0, 95, 229);;
+}
+
+.add-data__description-item {
+  resize: vertical;
+}
+
+.add-data__border {
+  background-color: rgba(0, 0, 0, 0.05);
+  height: 8px;
+  border-radius: 5px;
+}
+
+.wrapper-contents--flex {
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+
+
+/* デフォルトのスタイルをリセット */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 0.5em;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* セレクトボックスのコンテナをスタイル */
+.select-box {
+  position: relative;
+  width: 200px;
+  border: 2px solid rgb(0, 95, 229); /* 枠線のスタイル */
+  border-radius: 5px;
+  overflow: hidden;
+  margin-left: 10px;
+}
+
+/* 矢印アイコンのスタイル */
+.select-box::after {
+  content: '\203A'; /* 右向きの不等号のUnicode文字 */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%) rotate(90deg); /* 不等号を右に90度回転 */
+  pointer-events: none;
+}
+
+/* オプションのスタイル */
+.select-box select option {
+  padding: 0.5em;
+  background-color: #fff;
+}
+
+/* ホバーエフェクト */
+.select-box select:hover,
+.select-box select:focus {
+  background-color: #f0f0f0;
 }

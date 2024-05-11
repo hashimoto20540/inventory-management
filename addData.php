@@ -79,24 +79,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="layout-base__body">
 	<h1>商品を登録</h1>
 	<h2 class="h2_subtitle">詳細</h2>
-    <div class="add-data__wrapper-name-img">
-			<div class="add-data__wrapper-name">
-				<div class="form__wrapper-input">
-					<input type="text" name="name" required class="add-data__input-text-name" placeholder="名前">
-				</div>
-				<div class="form__wrapper-input">
-					<input type="text" name="furigana" required class="add-data__input-text-name" placeholder="フリガナ">
-				</div>
+	<div class="add-data__wrapper-name-img">
+		<div class="add-data__wrapper-name">
+			<div class="form__wrapper-input">
+				<input type="text" name="name" required class="add-data__input" placeholder="名前">
 			</div>
-			<div class="add-data__wrapper-img-edit">
-				<div class="add-data__data__wrapper-input-img">
-					<img class="add-data__input-img" src="https://placehold.jp/300x200.png" />
-				</div>
-				<div class="add-data__img-edit-button">編集</div>
+			<div class="form__wrapper-input">
+				<input type="text" name="furigana" required class="add-data__input" placeholder="フリガナ">
 			</div>
-    </div>
+		</div>
+		<div class="add-data__wrapper-img-edit">
+			<div class="add-data__data__wrapper-input-img">
+				<img class="add-data__input-img" src="https://placehold.jp/300x200.png" />
+			</div>
+			<div class="add-data__img-edit-button">編集</div>
+		</div>
+	</div>
+	<div class="form__wrapper-input">
+		<textarea type="text" name="description_item" required class="add-data__input add-data__description-item add-data__input--maxwidth " placeholder="商品の説明"></textarea>
+	</div>
+	<div class="add-data__border"></div>
+	<p>在庫</p>
+	<div class="form__wrapper-input">
+		<input type="text" name="quantity" required class="add-data__input add-data__input--maxwidth " placeholder="在庫">
+	</div>
+	<div class="add-data__border"></div>
+	<p>価格(¥)</p>
+	<div class="form__wrapper-input">
+		<input type="text" name="price" required class="add-data__input add-data__input--maxwidth " placeholder="価格">
+	</div>
+	<div class="add-data__border"></div>
+	<p>カテゴリー</p>
+	<div class="wrapper-contents--flex">
+		<img src="image/folder_icon.svg" alt="folder_icon" width="24" height="24" fill="rgb(0, 0, 0)">
+		<div class="select-box">
+			<select>
+				<option value="1">フルーツ</option>
+				<option value="2">野菜</option>
+				<option value="3">その他</option>
+			</select>
+		</div>
+	</div>
 
-	<input type="submit" value="ログイン" class="form__botton">
+
+
+
+
+
+
 </div>
 
 </form>
