@@ -34,8 +34,6 @@ $db->exec($sql);
 		<script src="javascript/productList.js" defer></script>
 </head>
 <body>
-<form action="addData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>" method="GET">
-<input type="hidden" id="last_id" name="last_id" value="">
 	<header class="dashboard__header">
 		<div class="menu-toggle" id="menu-toggle">
 			<!-- ハンバーガーメニューアイコン -->
@@ -61,47 +59,52 @@ $db->exec($sql);
 		</nav>
 
 		<main class="content">
-			<div class="information-bar product-list__information-bar">
-				<input class="content__information-box product-list__information-box" placeholder="名前、説明、SKU、GTINのいずれかで検索">
-				</input>	
-				<div class="flex-grow"></div>
-      	<input type="submit" value="商品を登録" onclick="getLastID()" class="content__information-box product-list__register-button">
-			</div>
-			<table border="1">
-        <tr>
-            <th>ID</th>
-            <th>商品名</th>
-						<th>カテゴリー</th>
-            <th>在庫数</th>
-            <th>価格</th>
-						<th></th>
-        </tr>
-        <?php
-        // 在庫情報の表示
-        $sql = "SELECT * FROM items";
-        $statement = $db->prepare($sql);
-        $statement->execute();
+			<form action="addData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>" method="GET">
+				<div class="information-bar product-list__information-bar">
+					<input class="content__information-box product-list__information-box" placeholder="名前、説明、SKU、GTINのいずれかで検索">
+					</input>	
+					<div class="flex-grow"></div>
+					<input type="submit" value="商品を登録" onclick="getLastID()" class="content__information-box product-list__register-button">
+				</div>
+			</form>
 
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-        ?>
-        <tr data-href="editData.php?id=<?php echo htmlspecialchars($row['id']); ?>&quantity=<?php echo htmlspecialchars($row['quantity']); ?>&name=<?php echo htmlspecialchars($row['name']); ?>"  title="商品編集ページに移動します">
-					  <td><?php echo htmlspecialchars($row['id']); ?></td>
-            <td><?php echo htmlspecialchars($row['name']); ?></td>
-						<td></td>
-            <td><?php echo htmlspecialchars($row['quantity']); ?></td>
-						<td></td>
-            <td>
-							<img src="image/more_horiz_icon.svg" alt="inventory_icon" width="24" height="24" >
-						</td>
-        </tr>
-        <?php
-        }
-        ?>
-			</table>
-			
+			<form action="editData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>" method="GET">
+			<input type="hidden" id="last_id" name="last_id" value="">
+				<table border="1">
+					<tr>
+						<th>ID</th>
+						<th>商品名</th>
+						<th>カテゴリー</th>
+						<th>在庫数</th>
+						<th>価格</th>
+						<th></th>
+					</tr>
+					<?php
+					// 在庫情報の表示
+					$sql = "SELECT * FROM items";
+					$statement = $db->prepare($sql);
+					$statement->execute();
+
+					while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+					?>
+					<tr data-href="editData.php?id=<?php echo htmlspecialchars($row['id']); ?>&quantity=<?php echo htmlspecialchars($row['quantity']); ?>&name=<?php echo htmlspecialchars($row['name']); ?>"  title="商品編集ページに移動します" >
+							<td><?php echo htmlspecialchars($row['id']); ?></td>
+							<td><?php echo htmlspecialchars($row['name']); ?></td>
+							<td></td>
+							<td><?php echo htmlspecialchars($row['quantity']); ?></td>
+							<td></td>
+							<td>
+								<img src="image/more_horiz_icon.svg" alt="inventory_icon" width="24" height="24" >
+							</td>
+					</tr>
+					<?php
+					}
+					?>
+				</table>
+			</form>
 		</main>
 	</div>
-</form>
+
 </body>
 </html>
 
