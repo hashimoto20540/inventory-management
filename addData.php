@@ -33,49 +33,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>在庫管理システム 商品追加画面</title>
-</head>
-<body>
-
-    <h2>在庫管理システム 商品追加画面</h2>
-    <form action="addData.php" method="POST">
-        <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>商品名</th>
-                <th>在庫数</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="text" name="name" value=""></td>
-                <td><input type="text" name="quantity" value=""></td>
-            </tr>
-        </table>
-        <input type="submit" value="登録" onclick="registeredRecrd()">
-    </form>
-    <a href="productList.php" class="button">戻る</a>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>商品登録</title>
 <link rel="stylesheet" type="text/css" href="css/login.css">
 <link rel="stylesheet" type="text/css" href="css/addData.css">
 </head>
 <body>
-<form action="login.php" method="post">
+<form action="addData.php" method="post">
+
+<header class="addData__header">
+	<a href="productList.php" class="button">
+		<div class="header__wrapper-close">
+			<img src="image/close_icon.svg" alt="close_icon" width="24" height="24" fill="rgb(0, 0, 0)">
+		</div>
+	</a>
+	<div class="flex-grow"></div>
+	<div class="header__wrapper-save-button" onclick="registeredRecrd()">
+		<input type="submit" value="保存" onclick="registeredRecrd()">
+	</div>
+</header>
+
 <div class="layout-base__body">
 	<h1>商品を登録</h1>
 	<h2 class="h2_subtitle">詳細</h2>
@@ -85,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<input type="text" name="name" required class="add-data__input" placeholder="名前">
 			</div>
 			<div class="form__wrapper-input">
-				<input type="text" name="furigana" required class="add-data__input" placeholder="フリガナ">
+				<input type="text" name="furigana" class="add-data__input" placeholder="フリガナ">
 			</div>
 		</div>
 		<div class="add-data__wrapper-img-edit">
@@ -96,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		</div>
 	</div>
 	<div class="form__wrapper-input">
-		<textarea type="text" name="description_item" required class="add-data__input add-data__description-item add-data__input--maxwidth " placeholder="商品の説明"></textarea>
+		<textarea type="text" name="description_item" class="add-data__input add-data__description-item add-data__input--maxwidth " placeholder="商品の説明"></textarea>
 	</div>
 	<div class="add-data__border"></div>
 	<p>在庫</p>
@@ -106,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<div class="add-data__border"></div>
 	<p>価格(¥)</p>
 	<div class="form__wrapper-input">
-		<input type="text" name="price" required class="add-data__input add-data__input--maxwidth " placeholder="価格">
+		<input type="text" name="price" class="add-data__input add-data__input--maxwidth " placeholder="価格">
 	</div>
 	<div class="add-data__border"></div>
 	<p>カテゴリー</p>
@@ -120,13 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			</select>
 		</div>
 	</div>
-
-
-
-
-
-
-
 </div>
 
 </form>

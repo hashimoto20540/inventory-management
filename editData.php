@@ -81,26 +81,77 @@ $db->exec($sql);
 
 
 
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>商品登録</title>
+<title>商品編集</title>
 <link rel="stylesheet" type="text/css" href="css/login.css">
+<link rel="stylesheet" type="text/css" href="css/addData.css">
+<link rel="stylesheet" type="text/css" href="css/editData.css">
 </head>
 <body>
-<form action="login.php" method="post">
+<form action="addData.php" method="post">
+
+<header class="addData__header">
+	<a href="productList.php" class="button">
+		<div class="header__wrapper-close">
+			<img src="image/close_icon.svg" alt="close_icon" width="24" height="24" fill="rgb(0, 0, 0)">
+		</div>
+	</a>
+	<div class="flex-grow"></div>
+	<div class="header__wrapper-save-button" onclick="registeredRecrd()">
+		<input type="submit" value="保存" onclick="registeredRecrd()">
+	</div>
+</header>
+
 <div class="layout-base__body">
-	<h1>商品登録</h1>
-	<p>アカウントをお持ちでない方 <a href="signup.php" class="internal-link"><span >アカウントを作成</span></a></p>
-	<div class="form__wrapper-input">
-		<input type="text" name="mail" required class="form__input-text" placeholder="メールアドレス">
+	<h1>商品を編集</h1>
+	<h2 class="h2_subtitle">詳細</h2>
+	<div class="add-data__wrapper-name-img">
+		<div class="add-data__wrapper-name">
+			<div class="form__wrapper-input">
+				<input type="text" name="name" required class="add-data__input" placeholder="名前">
+			</div>
+			<div class="form__wrapper-input">
+				<input type="text" name="furigana" class="add-data__input" placeholder="フリガナ">
+			</div>
+		</div>
+		<div class="add-data__wrapper-img-edit">
+			<div class="add-data__data__wrapper-input-img">
+				<img class="add-data__input-img" src="https://placehold.jp/300x200.png" />
+			</div>
+			<div class="add-data__img-edit-button">編集</div>
+		</div>
 	</div>
 	<div class="form__wrapper-input">
-		<input type="password" name="pass" required class="form__input-text" placeholder="パスワード">
+		<textarea type="text" name="description_item" class="add-data__input add-data__description-item add-data__input--maxwidth " placeholder="商品の説明"></textarea>
 	</div>
-	<input type="submit" value="ログイン" class="form__botton">
+	<div class="add-data__border"></div>
+	<p>在庫</p>
+	<div class="form__wrapper-input">
+		<input type="text" name="quantity" required class="add-data__input add-data__input--maxwidth " placeholder="在庫">
+	</div>
+	<div class="add-data__border"></div>
+	<p>価格(¥)</p>
+	<div class="form__wrapper-input">
+		<input type="text" name="price" class="add-data__input add-data__input--maxwidth " placeholder="価格">
+	</div>
+	<div class="add-data__border"></div>
+	<p>カテゴリー</p>
+	<div class="wrapper-contents--flex">
+		<img src="image/folder_icon.svg" alt="folder_icon" width="24" height="24" fill="rgb(0, 0, 0)">
+		<div class="select-box">
+			<select>
+				<option value="1">フルーツ</option>
+				<option value="2">野菜</option>
+				<option value="3">その他</option>
+			</select>
+		</div>
+	</div>
 </div>
 
 </form>
