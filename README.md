@@ -58,8 +58,8 @@ https://www.figma.com/file/chXWXnK4O5lSjceNumvKG9/ER%E5%9B%B3?type=design&node-i
 ## 参考文献<br>
 ・商品在庫管理：PHPで学ぶ！在庫管理システムの10ステップ作成ガイド<br>
 https://jp-seemore.com/web/7537/#toc3<br>
-・ログイン機能 →見れなくなってる(;´Д｀)やはりQiitaでいいね数が少ないものはダメ。<br>
-https://qiita.com/ryo-futebol/items/5fb635199acc2fcbd3f
+・ログイン機能 →見れなくなってる(;´Д｀)。やはりQiitaでいいね数が少ないものはダメ。<br>
+https://qiita.com/ryo-futebol/items/5fb635199acc2fcbd3f<br>
 ・若手プログラマー必読！５分で理解できるER図の書き方５ステップ<br>
 https://www.ntt.com/business/sdpf/knowledge/archive_50.html<br>
 ・やさしい図解で学ぶ　中間テーブル　多対多　概念編<br>
