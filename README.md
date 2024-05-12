@@ -10,9 +10,8 @@ XAMPPのhtdocsディレクトリー（C:\xampp\htdocs）にinventory-management�
 
 ### ログイン機能<br>
 ・ユーザー登録画面<br>
-・ログイン処理<br>
 ・ホーム画面<br>
-・商品管理画面にセッションの追加
+・未ログイン時にリダイレクト
 
 ## 使用技術<br>
 ### 使用言語
