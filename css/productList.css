@@ -17,6 +17,11 @@
   font-weight: bold;
 }
 
+.product-list__register-button:hover {
+  background-color: rgb(70, 147, 255);
+  cursor:pointer;
+}
+
 /* テーブル全体のスタイリング */
 table {
   width: 100%; /* テーブルを幅いっぱいにする */

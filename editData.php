@@ -29,12 +29,24 @@ $db->exec($sql);
 // 値を$_GET変数から取得
 $select_id = $_GET['id'];
 $edit_name = $_GET['name'];
+$edit_furigana = $_GET['furigana'];
+$edit_item_description = $_GET['item_description'];
 $edit_quantity = $_GET['quantity'];
+$edit_price = $_GET['price'];
+
 
 // 在庫数の登録・更新
-$sql = "UPDATE items SET name = :name, quantity = :quantity WHERE id = :id";
+$sql = "UPDATE items SET :name, :furigana, :item_description, :quantity, :price WHERE id = :id";
+$sql = "UPDATE items SET name = :name, furigana = :furigana, item_description = :item_description, quantity = :quantity, price = :price WHERE id = :id";
 $statement = $db->prepare($sql);
-$statement->execute([':name' => $edit_name, ':quantity' => $edit_quantity, ':id' => $select_id]);
+$statement->execute([
+	':name' => $edit_name,
+	':furigana' => $edit_furigana,
+	':item_description' => $edit_item_description,
+	':quantity' => $edit_quantity,
+	':price' => $edit_price,
+	':id' => $select_id
+]);
 
 // 更新後のデータを取得
 $sql = "SELECT * FROM items WHERE id = :id";
@@ -76,7 +88,7 @@ $row = $statement->fetch(PDO::FETCH_ASSOC);
 				<input type="text" name="name" required class="add-data__input" value="<?php echo htmlspecialchars($row['name']); ?>">
 			</div>
 			<div class="form__wrapper-input">
-				<input type="text" name="furigana" class="add-data__input" placeholder="フリガナ">
+				<input type="text" name="furigana" required class="add-data__input" value="<?php echo htmlspecialchars($row['furigana']); ?>">
 			</div>
 		</div>
 		<div class="add-data__wrapper-img-edit">
@@ -87,17 +99,17 @@ $row = $statement->fetch(PDO::FETCH_ASSOC);
 		</div>
 	</div>
 	<div class="form__wrapper-input">
-		<textarea type="text" name="description_item" class="add-data__input add-data__description-item add-data__input--maxwidth " placeholder="商品の説明"></textarea>
+		<textarea type="text" name="item_description" required class="add-data__input add-data__description-item add-data__input--maxwidth"><?php echo htmlspecialchars($row['item_description']); ?></textarea>
 	</div>
 	<div class="add-data__border"></div>
 	<p>在庫</p>
 	<div class="form__wrapper-input">
-		<input type="text" name="quantity" required class="add-data__input add-data__input--maxwidth " value="<?php echo htmlspecialchars($row['quantity']); ?>"">
+		<input type="text" name="quantity" required class="add-data__input add-data__input--maxwidth " value="<?php echo htmlspecialchars($row['quantity']); ?>">
 	</div>
 	<div class="add-data__border"></div>
 	<p>価格(¥)</p>
 	<div class="form__wrapper-input">
-		<input type="text" name="price" class="add-data__input add-data__input--maxwidth " placeholder="価格">
+		<input type="text" name="price" required class="add-data__input add-data__input--maxwidth "  value="<?php echo htmlspecialchars($row['price']); ?>">
 	</div>
 	<div class="add-data__border"></div>
 	<p>カテゴリー</p>

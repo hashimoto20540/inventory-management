@@ -4,9 +4,9 @@ session_start();
 
 // ログイン状態の確認 isset() は、変数が存在しているかどうかをチェック
 if (!isset($_SESSION['id'])) { // ログインしていない場合
-    // ログインページにリダイレクト header() 関数は、HTTPヘッダーの「Location」を設定
-    header("Location: login_form.php");
-    exit; // リダイレクト後、スクリプトを終了
+	// ログインページにリダイレクト header() 関数は、HTTPヘッダーの「Location」を設定
+	header("Location: login_form.php");
+	exit; // リダイレクト後、スクリプトを終了
 }
 
 // データベース接続 PDO(PHP Data Objects), PHPが提供するデータベースアクセスのための共通インターフェース
@@ -14,13 +14,26 @@ $db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', '
 
 // テーブル作成のSQL
 $sql = "CREATE TABLE IF NOT EXISTS items(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50),
-    quantity INT
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50),
+	furigana  VARCHAR(255),
+	item_description VARCHAR(255),
+	quantity INT,
+	price INT,
+	image_path VARCHAR(255)
 )";
+
+//テーブルに新しいカラムを追加
+$sql2 = "ALTER TABLE items 
+	ADD COLUMN furigana  VARCHAR(255),
+	ADD COLUMN item_description VARCHAR(255),
+	ADD COLUMN price INT,
+	ADD COLUMN image_path VARCHAR(255)
+";
 
 // SQLの実行
 $db->exec($sql);
+$db->exec($sql2);
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +81,7 @@ $db->exec($sql);
 				</div>
 			</form>
 
-			<form action="editData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>" method="GET">
+			<form action="editData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>&furigana=<?php echo htmlspecialchars(""); ?>&item_description=<?php echo htmlspecialchars(""); ?>&price=<?php echo htmlspecialchars(""); ?>" method="GET">
 			<input type="hidden" id="last_id" name="last_id" value="">
 				<table border="1">
 					<tr>
@@ -87,7 +100,7 @@ $db->exec($sql);
 
 					while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 					?>
-					<tr data-href="editData.php?id=<?php echo htmlspecialchars($row['id']); ?>&quantity=<?php echo htmlspecialchars($row['quantity']); ?>&name=<?php echo htmlspecialchars($row['name']); ?>"  title="商品編集ページに移動します" >
+					<tr data-href="editData.php?id=<?php echo htmlspecialchars($row['id']); ?>&quantity=<?php echo htmlspecialchars($row['quantity']); ?>&name=<?php echo htmlspecialchars($row['name']); ?>&furigana=<?php echo htmlspecialchars(""); ?>&item_description=<?php echo htmlspecialchars(""); ?>&price=<?php echo htmlspecialchars(""); ?>"  title="商品編集ページに移動します" >
 							<td><?php echo htmlspecialchars($row['id']); ?></td>
 							<td><?php echo htmlspecialchars($row['name']); ?></td>
 							<td></td>

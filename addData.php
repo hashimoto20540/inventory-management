@@ -15,12 +15,21 @@ $db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', '
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 値を$_POST変数から取得
     $registered_name = $_POST['name'];
+		$registered_furigana = $_POST['furigana'];
+		$registered_item_description = $_POST['item_description'];
     $registered_quantity = $_POST['quantity'];
+		$registered_price = $_POST['price'];
 
     // 商品情報の登録
-    $sql = "INSERT INTO items (name, quantity) VALUES (:name, :quantity)";
+    $sql = "INSERT INTO items (name, furigana, item_description, quantity, price) VALUES (:name, :furigana, :item_description, :quantity, :price)";
     $statement = $db->prepare($sql);
-    $statement->execute([':name' => $registered_name, ':quantity' => $registered_quantity]);
+    $statement->execute([
+			':name' => $registered_name,
+			':furigana' => $registered_furigana,
+			':item_description' => $registered_item_description,
+			':quantity' => $registered_quantity,
+			':price' => $registered_price
+		]);
 
     // 登録後に商品一覧画面にリダイレクト
     header("Location: productList.php");
@@ -61,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<input type="text" name="name" required class="add-data__input" placeholder="名前">
 			</div>
 			<div class="form__wrapper-input">
-				<input type="text" name="furigana" class="add-data__input" placeholder="フリガナ">
+				<input type="text" name="furigana" required class="add-data__input" placeholder="フリガナ">
 			</div>
 		</div>
 		<div class="add-data__wrapper-img-edit">
@@ -72,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		</div>
 	</div>
 	<div class="form__wrapper-input">
-		<textarea type="text" name="description_item" class="add-data__input add-data__description-item add-data__input--maxwidth " placeholder="商品の説明"></textarea>
+		<textarea type="text" name="item_description" required class="add-data__input add-data__description-item add-data__input--maxwidth " placeholder="商品の説明"></textarea>
 	</div>
 	<div class="add-data__border"></div>
 	<p>在庫</p>
@@ -82,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<div class="add-data__border"></div>
 	<p>価格(¥)</p>
 	<div class="form__wrapper-input">
-		<input type="text" name="price" class="add-data__input add-data__input--maxwidth " placeholder="価格">
+		<input type="text" name="price" required class="add-data__input add-data__input--maxwidth " placeholder="価格">
 	</div>
 	<div class="add-data__border"></div>
 	<p>カテゴリー</p>

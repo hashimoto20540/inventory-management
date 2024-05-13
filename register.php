@@ -13,7 +13,7 @@ $sql = "CREATE TABLE IF NOT EXISTS users(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50),
     mail VARCHAR(50),
-    pass VARCHAR(100)
+    pass VARCHAR(255)
 )";
 
 // SQLの実行
