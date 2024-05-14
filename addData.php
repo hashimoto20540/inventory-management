@@ -13,28 +13,68 @@ if (!isset($_SESSION['id'])) { // ログインしていない場合
 $db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // 値を$_POST変数から取得
-    $registered_name = $_POST['name'];
-		$registered_furigana = $_POST['furigana'];
-		$registered_item_description = $_POST['item_description'];
-    $registered_quantity = $_POST['quantity'];
-		$registered_price = $_POST['price'];
+	// 値を$_POST変数から取得
+	$registered_name = $_POST['name'];
+	$registered_furigana = $_POST['furigana'];
+	$registered_item_description = $_POST['item_description'];
+	$registered_quantity = $_POST['quantity'];
+	$registered_price = $_POST['price'];
+	// 画像のアップロードと保存
+	$imageFile = $_FILES['image'];
 
-    // 商品情報の登録
-    $sql = "INSERT INTO items (name, furigana, item_description, quantity, price) VALUES (:name, :furigana, :item_description, :quantity, :price)";
-    $statement = $db->prepare($sql);
-    $statement->execute([
-			':name' => $registered_name,
-			':furigana' => $registered_furigana,
-			':item_description' => $registered_item_description,
-			':quantity' => $registered_quantity,
-			':price' => $registered_price
-		]);
+	// 商品情報の登録
+	// $sql = "INSERT INTO items (name, furigana, item_description, quantity, price) VALUES (:name, :furigana, :item_description, :quantity, :price)";
+	// $statement = $db->prepare($sql);
+	// $statement->execute([
+	// 	':name' => $registered_name,
+	// 	':furigana' => $registered_furigana,
+	// 	':item_description' => $registered_item_description,
+	// 	':quantity' => $registered_quantity,
+	// 	':price' => $registered_price
+	// ]);
 
-    // 登録後に商品一覧画面にリダイレクト
-    header("Location: productList.php");
-    exit;
+	echo $registered_name;
+	echo $registered_furigana;
+	echo $registered_item_description;
+	echo $registered_quantity;
+	echo $registered_price;
+	echo $imageFile['error']; 
+	// echo var_dump($imageFile);
+
+	$uploadDir = 'image/productListThumbnail/';
+	$uploadedFilePath = $uploadDir . basename($imageFile['name']);
+
+	echo $uploadedFilePath;
+
+	// データベースへのパスの保存
+	$sql = "INSERT INTO items (name, furigana, item_description, quantity, price, image_path) 
+		VALUES (:name, :furigana, :item_description, :quantity, :price, :image_path)";
+	$statement = $db->prepare($sql);
+	$statement->execute([
+	':name' => $registered_name,
+	':furigana' => $registered_furigana,
+	':item_description' => $registered_item_description,
+	':quantity' => $registered_quantity,
+	':price' => $registered_price,
+	':image_path' => $uploadedFilePath
+	]);
+
+
+
+
+
+		// // 登録後に商品一覧画面にリダイレクト
+		// header("Location: productList.php");
+		// exit;
 }
+
+
+
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -45,9 +85,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <title>商品登録</title>
 <link rel="stylesheet" type="text/css" href="css/login.css">
 <link rel="stylesheet" type="text/css" href="css/addData.css">
+<script src="javascript/addData.js" defer></script>
 </head>
 <body>
-<form action="addData.php" method="post">
+<form action="addData.php" method="post"  enctype="multipart/form-data">
 
 <header class="addData__header">
 	<a href="productList.php" class="button">
@@ -73,13 +114,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<input type="text" name="furigana" required class="add-data__input" placeholder="フリガナ">
 			</div>
 		</div>
-		<div class="add-data__wrapper-img-edit">
+		<div class="add-data__wrapper-img-edit" id="imageEditButton">
 			<div class="add-data__data__wrapper-input-img">
-				<img class="add-data__input-img" src="https://placehold.jp/300x200.png" />
+				<img id="imagePreview" class="add-data__input-img" src="https://placehold.jp/300x200.png" />
 			</div>
 			<div class="add-data__img-edit-button">編集</div>
 		</div>
 	</div>
+	<!-- 後でinputタグにstyle="display: none;"を付け加える  -->
+	<input type="file" id="imageUpload" name="image" accept="image/*">
 	<div class="form__wrapper-input">
 		<textarea type="text" name="item_description" required class="add-data__input add-data__description-item add-data__input--maxwidth " placeholder="商品の説明"></textarea>
 	</div>
@@ -105,7 +148,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			</select>
 		</div>
 	</div>
+
+
+	
+
+
+
+
+
+
+
+
 </div>
+
+
+
+
+
+
 
 </form>
 </body>
