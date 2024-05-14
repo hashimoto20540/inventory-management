@@ -1,4 +1,5 @@
 <?php
+var_dump($_FILES);
 // セッション開始
 session_start();
 
@@ -34,19 +35,80 @@ $edit_item_description = $_GET['item_description'];
 $edit_quantity = $_GET['quantity'];
 $edit_price = $_GET['price'];
 
+if(isset($_GET['image_path'])) {
+	$edit_image_path = $_GET['image_path'];
+}
+
+// echo  $_GET['id'];
+// echo $_FILES['image']['name'];
+
+if(isset($_GET['image_path'])) {
+	echo $edit_image_path;
+}
+
+
+
+// $imageFile = $_FILES['image'];
+if(isset($_FILES['image'])) {
+	
+	if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
+		$imageFile = $_FILES['image'];
+		$uploadDir = 'image/productListThumbnail/';
+		$uploadedFilePath = $uploadDir . basename($imageFile['name']);
+		echo "FILES[image]は登録されました";
+		if (move_uploaded_file($imageFile['tmp_name'], $uploadedFilePath)) {
+			echo "ファイルがアップロードされました。";
+		} else {
+			echo "ファイルのアップロードに失敗しました。";
+		}
+	} else {
+		echo "ファイルのアップロードエラーが発生しました。";
+		// echo $imageFile["error"];
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
 
 // 在庫数の登録・更新
-$sql = "UPDATE items SET :name, :furigana, :item_description, :quantity, :price WHERE id = :id";
-$sql = "UPDATE items SET name = :name, furigana = :furigana, item_description = :item_description, quantity = :quantity, price = :price WHERE id = :id";
+$sql = "UPDATE items SET :name, :furigana, :item_description, :quantity, :price, :image_path WHERE id = :id";
+$sql = "UPDATE items SET name = :name, furigana = :furigana, item_description = :item_description, quantity = :quantity, price = :price, image_path = :image_path WHERE id = :id";
 $statement = $db->prepare($sql);
-$statement->execute([
-	':name' => $edit_name,
-	':furigana' => $edit_furigana,
-	':item_description' => $edit_item_description,
-	':quantity' => $edit_quantity,
-	':price' => $edit_price,
-	':id' => $select_id
-]);
+
+if(isset($_GET['image_path'])) {
+	$statement->execute([
+		':name' => $edit_name,
+		':furigana' => $edit_furigana,
+		':item_description' => $edit_item_description,
+		':quantity' => $edit_quantity,
+		':price' => $edit_price,
+		':image_path' => $edit_image_path,
+		':id' => $select_id
+	]);
+}
+
+if(isset($_FILES['image'])) {
+	$statement->execute([
+		':name' => $edit_name,
+		':furigana' => $edit_furigana,
+		':item_description' => $edit_item_description,
+		':quantity' => $edit_quantity,
+		':price' => $edit_price,
+		':image_path' => $uploadedFilePath,
+		':id' => $select_id
+	]);	
+	// 登録後に商品一覧画面にリダイレクト
+	// header("Location: productList.php");
+	// exit;
+}
 
 // 更新後のデータを取得
 $sql = "SELECT * FROM items WHERE id = :id";
@@ -64,9 +126,10 @@ $row = $statement->fetch(PDO::FETCH_ASSOC);
 <link rel="stylesheet" type="text/css" href="css/login.css">
 <link rel="stylesheet" type="text/css" href="css/addData.css">
 <link rel="stylesheet" type="text/css" href="css/editData.css">
+<script src="javascript/editData.js" defer></script>
 </head>
 <body>
-<form action="editData.php" method="GET">
+<form action="editData.php" method="GET" enctype="multipart/form-data">
 <header class="addData__header">
 	<a href="productList.php" class="button">
 		<div class="header__wrapper-close">
@@ -91,13 +154,27 @@ $row = $statement->fetch(PDO::FETCH_ASSOC);
 				<input type="text" name="furigana" required class="add-data__input" value="<?php echo htmlspecialchars($row['furigana']); ?>">
 			</div>
 		</div>
-		<div class="add-data__wrapper-img-edit">
+
+
+
+
+
+
+
+
+
+		<div class="add-data__wrapper-img-edit" id="imageEditButton">
 			<div class="add-data__data__wrapper-input-img">
-				<img class="add-data__input-img" src="https://placehold.jp/300x200.png" />
+				<img id="imagePreview" class="add-data__input-img" src="<?php echo htmlspecialchars($row['image_path']); ?>" />
 			</div>
 			<div class="add-data__img-edit-button">編集</div>
 		</div>
 	</div>
+	<!-- display: none;を一旦削除 -->
+	<input type="file" id="imageUpload" name="image" accept="image/*" style="">
+
+
+
 	<div class="form__wrapper-input">
 		<textarea type="text" name="item_description" required class="add-data__input add-data__description-item add-data__input--maxwidth"><?php echo htmlspecialchars($row['item_description']); ?></textarea>
 	</div>

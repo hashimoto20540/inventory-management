@@ -19,32 +19,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$registered_item_description = $_POST['item_description'];
 	$registered_quantity = $_POST['quantity'];
 	$registered_price = $_POST['price'];
+	// $_FILESから取得
 	// 画像のアップロードと保存
 	$imageFile = $_FILES['image'];
 
-	// 商品情報の登録
-	// $sql = "INSERT INTO items (name, furigana, item_description, quantity, price) VALUES (:name, :furigana, :item_description, :quantity, :price)";
-	// $statement = $db->prepare($sql);
-	// $statement->execute([
-	// 	':name' => $registered_name,
-	// 	':furigana' => $registered_furigana,
-	// 	':item_description' => $registered_item_description,
-	// 	':quantity' => $registered_quantity,
-	// 	':price' => $registered_price
-	// ]);
+	if ($imageFile['error'] === UPLOAD_ERR_OK) {
+		$uploadDir = 'image/productListThumbnail/';
+		$uploadedFilePath = $uploadDir . basename($imageFile['name']);
 
-	echo $registered_name;
-	echo $registered_furigana;
-	echo $registered_item_description;
-	echo $registered_quantity;
-	echo $registered_price;
-	echo $imageFile['error']; 
-	// echo var_dump($imageFile);
-
-	$uploadDir = 'image/productListThumbnail/';
-	$uploadedFilePath = $uploadDir . basename($imageFile['name']);
-
-	echo $uploadedFilePath;
+		if (move_uploaded_file($imageFile['tmp_name'], $uploadedFilePath)) {
+			// echo "ファイルがアップロードされました。";
+		} else {
+			echo "ファイルのアップロードに失敗しました。";
+		}
+	} else {
+		echo "ファイルのアップロードエラーが発生しました。";
+		echo $imageFile["error"];
+	}
 
 	// データベースへのパスの保存
 	$sql = "INSERT INTO items (name, furigana, item_description, quantity, price, image_path) 
@@ -59,22 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	':image_path' => $uploadedFilePath
 	]);
 
-
-
-
-
-		// // 登録後に商品一覧画面にリダイレクト
-		// header("Location: productList.php");
-		// exit;
+		// 登録後に商品一覧画面にリダイレクト
+		header("Location: productList.php");
+		exit;
 }
-
-
-
-
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -121,8 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			<div class="add-data__img-edit-button">編集</div>
 		</div>
 	</div>
-	<!-- 後でinputタグにstyle="display: none;"を付け加える  -->
-	<input type="file" id="imageUpload" name="image" accept="image/*">
+	<input type="file" id="imageUpload" name="image" accept="image/*" style="display: none;">
 	<div class="form__wrapper-input">
 		<textarea type="text" name="item_description" required class="add-data__input add-data__description-item add-data__input--maxwidth " placeholder="商品の説明"></textarea>
 	</div>
@@ -148,25 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			</select>
 		</div>
 	</div>
-
-
-	
-
-
-
-
-
-
-
-
 </div>
-
-
-
-
-
-
-
 </form>
 </body>
 </html>

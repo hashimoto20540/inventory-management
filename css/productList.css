@@ -55,3 +55,16 @@ table tr:hover {
   background-color: rgba(173, 216, 230, 0.3); /* ホバー時に薄く青色に変わる */
   cursor: pointer; 
 }
+
+.productList__table--th-image {
+  width: 40px;
+}
+/* 
+.productList__table--wapper-image {
+} */
+
+.productList__table--image {
+  height: 40px;
+  width: 40px;
+  border-radius: 5px;
+}

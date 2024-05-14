@@ -23,7 +23,7 @@ $sql = "CREATE TABLE IF NOT EXISTS items(
 	image_path VARCHAR(255)
 )";
 
-//テーブルに新しいカラムを追加
+//テーブルに新しいカラムを追加(必要ないかも)
 $sql2 = "ALTER TABLE items 
 	ADD COLUMN furigana  VARCHAR(255),
 	ADD COLUMN item_description VARCHAR(255),
@@ -34,6 +34,11 @@ $sql2 = "ALTER TABLE items
 // SQLの実行
 $db->exec($sql);
 $db->exec($sql2);
+
+//ID初期化
+$id_initialization = "ALTER TABLE items AUTO_INCREMENT = 1";
+$statement = $db->prepare($id_initialization);
+$statement->execute();
 ?>
 
 <!DOCTYPE html>
@@ -43,8 +48,7 @@ $db->exec($sql2);
     <title>商品一覧</title>
     <link rel="stylesheet" type="text/css" href="css/index.css">
 		<link rel="stylesheet" type="text/css" href="css/productList.css">
-    <script src="javascript/index.js" defer></script>
-		<script src="javascript/productList.js" defer></script>
+  	<script src="javascript/productList.js" defer></script>
 </head>
 <body>
 	<header class="dashboard__header">
@@ -72,7 +76,7 @@ $db->exec($sql2);
 		</nav>
 
 		<main class="content">
-			<form action="addData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>" method="GET">
+			<form action="addData.php" method="GET">
 				<div class="information-bar product-list__information-bar">
 					<input class="content__information-box product-list__information-box" placeholder="名前、説明、SKU、GTINのいずれかで検索">
 					</input>	
@@ -80,41 +84,57 @@ $db->exec($sql2);
 					<input type="submit" value="商品を登録" onclick="getLastID()" class="content__information-box product-list__register-button">
 				</div>
 			</form>
+			<table border="1" id="table_items">
+				<tr>
+					<th>ID</th>
+					<th class="productList__table--th-image"></th>
+					<th>商品名</th>
+					<th>フリガナ</th>
+					<th>カテゴリー</th>
+					<th>在庫数</th>
+					<th>価格</th>
+					<th></th>
+				</tr>
+				<?php
+				// 在庫情報の表示
+				$sql = "SELECT * FROM items";
+				$statement = $db->prepare($sql);
+				$statement->execute();
 
-			<form action="editData.php?id=<?php echo htmlspecialchars(""); ?>&quantity=<?php echo htmlspecialchars(""); ?>&name=<?php echo htmlspecialchars(""); ?>&furigana=<?php echo htmlspecialchars(""); ?>&item_description=<?php echo htmlspecialchars(""); ?>&price=<?php echo htmlspecialchars(""); ?>" method="GET">
-			<input type="hidden" id="last_id" name="last_id" value="">
-				<table border="1">
-					<tr>
-						<th>ID</th>
-						<th>商品名</th>
-						<th>カテゴリー</th>
-						<th>在庫数</th>
-						<th>価格</th>
-						<th></th>
+				while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+				?>
+				<tr data-id="<?php echo htmlspecialchars($row['id']); ?>"
+					data-name="<?php echo htmlspecialchars($row['name']); ?>"
+					data-quantity="<?php echo htmlspecialchars($row['quantity']); ?>"
+					data-furigana="<?php echo htmlspecialchars($row['furigana']); ?>"
+					data-description="<?php echo htmlspecialchars($row['item_description']); ?>"
+					data-price="<?php echo htmlspecialchars($row['price']); ?>"
+					data-image="<?php echo htmlspecialchars($row['image_path']); ?>"
+					title="<?php echo htmlspecialchars($row['name']); ?>の商品編集ページに移動します"
+					enctype="multipart/form-data">
+						<td><?php echo htmlspecialchars($row['id']); ?></td>
+						<td>
+							<div class="productList__table--wapper-image">
+								<?php if (!empty($row['image_path'])) : ?>
+									<img class="productList__table--image" src="<?php echo htmlspecialchars($row['image_path']); ?>" />
+								<?php else : ?>
+									<img class="productList__table--image" src="https://placehold.jp/300x200.png" />
+								<?php endif; ?>
+							</div>
+						</td>
+						<td><?php echo htmlspecialchars($row['name']); ?></td>
+						<td><?php echo htmlspecialchars($row['furigana']); ?></td>
+						<td></td>
+						<td><?php echo htmlspecialchars($row['quantity']); ?></td>
+						<td><?php echo htmlspecialchars($row['price']); ?></td>
+						<!-- <td>
+							<img src="image/more_horiz_icon.svg" alt="inventory_icon" width="24" height="24" >
+						</td> -->
 					</tr>
-					<?php
-					// 在庫情報の表示
-					$sql = "SELECT * FROM items";
-					$statement = $db->prepare($sql);
-					$statement->execute();
-
-					while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-					?>
-					<tr data-href="editData.php?id=<?php echo htmlspecialchars($row['id']); ?>&quantity=<?php echo htmlspecialchars($row['quantity']); ?>&name=<?php echo htmlspecialchars($row['name']); ?>&furigana=<?php echo htmlspecialchars(""); ?>&item_description=<?php echo htmlspecialchars(""); ?>&price=<?php echo htmlspecialchars(""); ?>"  title="商品編集ページに移動します" >
-							<td><?php echo htmlspecialchars($row['id']); ?></td>
-							<td><?php echo htmlspecialchars($row['name']); ?></td>
-							<td></td>
-							<td><?php echo htmlspecialchars($row['quantity']); ?></td>
-							<td></td>
-							<td>
-								<img src="image/more_horiz_icon.svg" alt="inventory_icon" width="24" height="24" >
-							</td>
-					</tr>
-					<?php
-					}
-					?>
-				</table>
-			</form>
+				<?php
+				}
+				?>
+			</table>
 		</main>
 	</div>
 
