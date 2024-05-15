@@ -85,7 +85,7 @@ $statement->execute();
 				</div>
 			</form>
 			<table border="1" id="table_items">
-				<tr>
+				<tr class="product-table__th">
 					<th>ID</th>
 					<th class="productList__table--th-image"></th>
 					<th>商品名</th>

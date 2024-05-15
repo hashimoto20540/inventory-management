@@ -1,0 +1,24 @@
+.body__wrapper-delete-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.body__wrapper-delete-button button {
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  background-color: rgb(248, 41, 69);
+    width: fit-content;
+    height: 48px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 0 16px;
+    font-weight: bold;
+}
+
+.body__wrapper-delete-button button:hover {
+  background-color:rgb(247 72 94);
+}

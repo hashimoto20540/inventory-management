@@ -43,6 +43,11 @@
 	font-weight: bold;
 }
 
+.form__botton:hover {
+	background-color: rgb(52, 126, 230);
+	cursor: pointer;
+}
+
 .form__botton2 {
 	background-color: rgb(0, 95, 229);
 	color: white;

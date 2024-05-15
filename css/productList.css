@@ -56,6 +56,11 @@ table tr:hover {
   cursor: pointer; 
 }
 
+table .product-table__th:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: default;
+}
+
 .productList__table--th-image {
   width: 40px;
 }
@@ -67,4 +72,5 @@ table tr:hover {
   height: 40px;
   width: 40px;
   border-radius: 5px;
+  object-fit: cover;
 }

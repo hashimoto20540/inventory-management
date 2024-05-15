@@ -1,5 +1,5 @@
 <?php
-var_dump($_FILES);
+// control
 // セッション開始
 session_start();
 
@@ -20,6 +20,7 @@ $sql = "CREATE TABLE IF NOT EXISTS items(
     quantity INT
 )";
 
+//振られているIDを１から数えなおす
 $id_initialization = "ALTER TABLE items AUTO_INCREMENT = 1";
 $statement = $db->prepare($id_initialization);
 $statement->execute();
@@ -27,63 +28,68 @@ $statement->execute();
 // SQLの実行
 $db->exec($sql);
 
-// 値を$_GET変数から取得
-$select_id = $_GET['id'];
-$edit_name = $_GET['name'];
-$edit_furigana = $_GET['furigana'];
-$edit_item_description = $_GET['item_description'];
-$edit_quantity = $_GET['quantity'];
-$edit_price = $_GET['price'];
-
-if(isset($_GET['image_path'])) {
-	$edit_image_path = $_GET['image_path'];
-}
-
-// echo  $_GET['id'];
-// echo $_FILES['image']['name'];
-
-if(isset($_GET['image_path'])) {
-	echo $edit_image_path;
-}
-
-
-
-// $imageFile = $_FILES['image'];
-if(isset($_FILES['image'])) {
-	
-	if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
-		$imageFile = $_FILES['image'];
-		$uploadDir = 'image/productListThumbnail/';
-		$uploadedFilePath = $uploadDir . basename($imageFile['name']);
-		echo "FILES[image]は登録されました";
-		if (move_uploaded_file($imageFile['tmp_name'], $uploadedFilePath)) {
-			echo "ファイルがアップロードされました。";
-		} else {
-			echo "ファイルのアップロードに失敗しました。";
-		}
-	} else {
-		echo "ファイルのアップロードエラーが発生しました。";
-		// echo $imageFile["error"];
+// productListから遷移した際、値を$_GET変数から取得
+if(isset($_GET['id'])) {
+	$select_id = $_GET['id'];
+	$edit_name = $_GET['name'];
+	$edit_furigana = $_GET['furigana'];
+	$edit_item_description = $_GET['item_description'];
+	$edit_quantity = $_GET['quantity'];
+	$edit_price = $_GET['price'];
+	if(isset($_GET['image_path'])) {
+		$edit_image_path = $_GET['image_path'];
 	}
 }
 
 
 
+// 削除ボタンが押されたとき
+if (isset($_POST['delete']) && $_POST['delete'] === 'true') {
+	// 削除処理
+	$select_id = $_POST['id'];
+	$sql = "DELETE FROM items WHERE id = :id";
+	$statement = $db->prepare($sql);
+	$statement->execute([':id' => $select_id]);
+	// 削除後に商品一覧画面にリダイレクト
+	header("Location: productList.php");
+	exit;
+}
 
+//画像を更新したか判断する
+if(isset($_FILES['image'])) {
+	$imageFile = $_FILES['image'];
+	if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
+		$imageFile = $_FILES['image'];
+		$uploadDir = 'image/productListThumbnail/';
+		$edit_image_path = $uploadDir . basename($imageFile['name']);
+		// echo "FILES[image]は登録されました";
+		if (move_uploaded_file($imageFile['tmp_name'], $edit_image_path)) {
+			// echo "ファイルがアップロードされました。";
+		} else {
+			echo "ファイルのアップロードに失敗しました。";
+		}
+	} else {
+		// echo "ファイルのアップロードエラーが発生しました。";
+		//もともと使用していた画像のパスを使用（画面遷移時にGETしたpathをinputに入れて、再度POSTで送った）
+		$edit_image_path = $_POST['before_edit_image_path'];
+	}
+}
 
-
-
-
-
-
-
-
-// 在庫数の登録・更新
+// データの更新
 $sql = "UPDATE items SET :name, :furigana, :item_description, :quantity, :price, :image_path WHERE id = :id";
 $sql = "UPDATE items SET name = :name, furigana = :furigana, item_description = :item_description, quantity = :quantity, price = :price, image_path = :image_path WHERE id = :id";
 $statement = $db->prepare($sql);
 
-if(isset($_GET['image_path'])) {
+if(isset($_POST['id'])) {
+	$edit_name = $_POST['name'];
+	$edit_furigana = $_POST['furigana'];
+	$edit_item_description = $_POST['item_description'];
+	$edit_quantity = $_POST['quantity'];
+	$edit_price = $_POST['price'];
+	$select_id = $_POST['id'];
+
+	// echo $uploadedFilePath;
+	//SQLクエリ内のプレースホルダーを対応する値に置き換える
 	$statement->execute([
 		':name' => $edit_name,
 		':furigana' => $edit_furigana,
@@ -92,22 +98,10 @@ if(isset($_GET['image_path'])) {
 		':price' => $edit_price,
 		':image_path' => $edit_image_path,
 		':id' => $select_id
-	]);
-}
-
-if(isset($_FILES['image'])) {
-	$statement->execute([
-		':name' => $edit_name,
-		':furigana' => $edit_furigana,
-		':item_description' => $edit_item_description,
-		':quantity' => $edit_quantity,
-		':price' => $edit_price,
-		':image_path' => $uploadedFilePath,
-		':id' => $select_id
 	]);	
 	// 登録後に商品一覧画面にリダイレクト
-	// header("Location: productList.php");
-	// exit;
+	header("Location: productList.php");
+	exit;
 }
 
 // 更新後のデータを取得
@@ -129,7 +123,7 @@ $row = $statement->fetch(PDO::FETCH_ASSOC);
 <script src="javascript/editData.js" defer></script>
 </head>
 <body>
-<form action="editData.php" method="GET" enctype="multipart/form-data">
+<form id="editForm" action="editData.php" method="POST" enctype="multipart/form-data">
 <header class="addData__header">
 	<a href="productList.php" class="button">
 		<div class="header__wrapper-close">
@@ -155,14 +149,6 @@ $row = $statement->fetch(PDO::FETCH_ASSOC);
 			</div>
 		</div>
 
-
-
-
-
-
-
-
-
 		<div class="add-data__wrapper-img-edit" id="imageEditButton">
 			<div class="add-data__data__wrapper-input-img">
 				<img id="imagePreview" class="add-data__input-img" src="<?php echo htmlspecialchars($row['image_path']); ?>" />
@@ -170,10 +156,9 @@ $row = $statement->fetch(PDO::FETCH_ASSOC);
 			<div class="add-data__img-edit-button">編集</div>
 		</div>
 	</div>
-	<!-- display: none;を一旦削除 -->
-	<input type="file" id="imageUpload" name="image" accept="image/*" style="">
-
-
+	<!-- JSでsrc属性を追加 -->
+	<input type="file" id="imageUpload" name="image" accept="image/*" style="display: none;">
+	<input type="hidden" name="before_edit_image_path" value="<?php echo htmlspecialchars($row['image_path']); ?>">
 
 	<div class="form__wrapper-input">
 		<textarea type="text" name="item_description" required class="add-data__input add-data__description-item add-data__input--maxwidth"><?php echo htmlspecialchars($row['item_description']); ?></textarea>
@@ -200,7 +185,11 @@ $row = $statement->fetch(PDO::FETCH_ASSOC);
 			</select>
 		</div>
 	</div>
+	<div class="body__wrapper-delete-button">
+		<button type="button" id="deleteButton">削除</button>
+	</div>
 	<input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
+	<input type="hidden" name="delete" id="deleteInput" value="false">
 </div>
 
 </form>

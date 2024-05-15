@@ -16,3 +16,12 @@ document.getElementById("imageUpload").addEventListener("change", function() {
     reader.readAsDataURL(file);
   }
 });
+
+
+// 削除ボタンがクリックされたときに確認メッセージを表示
+document.getElementById("deleteButton").addEventListener("click", function() {
+  if (confirm("本当に削除しますか？")) {
+      document.getElementById("deleteInput").value = "true";
+      document.getElementById("editForm").submit();
+  }
+});

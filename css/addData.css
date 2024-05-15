@@ -36,6 +36,10 @@
   font-weight: bold;
 }
 
+.header__wrapper-save-button:hover {
+  background-color: rgb(27, 122, 255);
+}
+
 .header__wrapper-save-button input[type="submit"] {
   background: none;
   border: none;
