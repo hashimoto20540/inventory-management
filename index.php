@@ -1,6 +1,7 @@
 <?php
-// session_start();
+
 $cookie_lifetime = 300;
+//PHPセッション開始：PHPのセッションは、ユーザーがウェブサイトを訪問している間に、サーバー側でデータを保存し、複数のページにわたってそのデータを共有するための仕組み
 //セッションの有効期限を指定する
 session_start([
     'cookie_lifetime' => $cookie_lifetime,
@@ -14,6 +15,8 @@ if (!isset($_SESSION['id'])) { // ログインしていない場合
 }
 
 $username = $_SESSION['name'];
+//htmlspecialchars 関数を使って、ユーザー名をHTMLエスケープします。これにより、ユーザー名に特殊文字（例: <, >, & など）が含まれていても、HTMLとして解釈されずに表示。XSS攻撃を防ぐ
+//\ENT_QUOTES: シングルクォート（'）とダブルクォート（"）の両方をエスケープ。
 $msg = 'こんにちは' . htmlspecialchars($username, \ENT_QUOTES, 'UTF-8') . 'さん';
 $link_productList = '<a href="productList.php">商品管理ページへ</a>';
 $link_logout = '<a href="logout.php">ログアウト</a>';
@@ -59,7 +62,8 @@ $link_logout = '<a href="logout.php">ログアウト</a>';
 				<div class="content__information-box">名前 <span class="content__information-box--bold"><?php echo $username; ?>さん</span></div>
 				<div class="content__information-box">日付 <span id="today-date" class="content__information-box--bold"></span></div>
 			</div>
-			<h2>さっそくはじめましょう</h2>
+			<h2><?php echo $msg; ?></h2>
+			<p>さっそくはじめましょう</p>
 			
 		</main>
 	</div>
