@@ -1,61 +1,99 @@
 <?php
+// Model
 // セッション開始
 session_start();
-
 // ログイン状態の確認
-if (!isset($_SESSION['id'])) { // ログインしていない場合
-    // ログインページにリダイレクト
-    header("Location: login_form.php");
-    exit; // リダイレクト後、スクリプトを終了
+function isLoggedIn() {
+	// ログインしていない場合、ログインページにリダイレクト
+	return isset($_SESSION['id']);
 }
 
 // データベース接続
-$db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	// 値を$_POST変数から取得
-	$registered_name = $_POST['name'];
-	$registered_furigana = $_POST['furigana'];
-	$registered_item_description = $_POST['item_description'];
-	$registered_quantity = $_POST['quantity'];
-	$registered_price = $_POST['price'];
-	// $_FILESから取得
-	// 画像のアップロードと保存
-	$imageFile = $_FILES['image'];
-
-	if ($imageFile['error'] === UPLOAD_ERR_OK) {
-		$uploadDir = 'image/productListThumbnail/';
-		$uploadedFilePath = $uploadDir . basename($imageFile['name']);
-
-		if (move_uploaded_file($imageFile['tmp_name'], $uploadedFilePath)) {
-			// echo "ファイルがアップロードされました。";
-		} else {
-			echo "ファイルのアップロードに失敗しました。";
-		}
-	} else {
-		echo "ファイルのアップロードエラーが発生しました。";
-		echo $imageFile["error"];
-	}
-
-	// データベースへのパスの保存
-	$sql = "INSERT INTO items (name, furigana, item_description, quantity, price, image_path) 
-		VALUES (:name, :furigana, :item_description, :quantity, :price, :image_path)";
-	$statement = $db->prepare($sql);
-	$statement->execute([
-	':name' => $registered_name,
-	':furigana' => $registered_furigana,
-	':item_description' => $registered_item_description,
-	':quantity' => $registered_quantity,
-	':price' => $registered_price,
-	':image_path' => $uploadedFilePath
-	]);
-
-		// 登録後に商品一覧画面にリダイレクト
-		header("Location: productList.php");
+function connectDatabase() {
+	//データベース接続はtryを入れる
+	try {
+		return new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
+	} catch (PDOException $e) {
+		echo 'データベース接続失敗: ' . $e->getMessage();
 		exit;
+	}
 }
-?>
 
+//商品を保存
+function saveItem($db, $data, $imagePath = null) {
+	//$sql は実行したいSQL文の文字列を記載
+	//items テーブルに、挿入するカラムを指定
+	//VALUES句で、挿入する値を指定。:で始まる名前（プレースホルダー）は、後で実際の値に置換。
+	$sql = "INSERT INTO items (name, furigana, item_description, quantity, price, image_path) 
+					VALUES (:name, :furigana, :item_description, :quantity, :price, :image_path)";
+	//SQL文をプリペアドステートメント(実行するSQL文を事前に解析し、効率的かつ安全に実行するための仕組み)に変換
+	$statement = $db->prepare($sql);
+	//プレースホルダを具体的な値に置換
+	//$statement->execute() は、プリペアドステートメントを実行するためのメソッド
+	$statement->execute([
+			':name' => $data['name'],
+			':furigana' => $data['furigana'],
+			':item_description' => $data['item_description'],
+			':quantity' => $data['quantity'],
+			':price' => $data['price'],
+			':image_path' => $imagePath
+	]);
+}
+
+function handleFileUpload($file) {
+    if ($file['error'] === UPLOAD_ERR_NO_FILE) {
+        // ファイルがアップロードされなかった場合
+        return null;
+    }
+		//UPLOAD_ERR_OK：アップロードされたファイルにエラーがないことを示す
+    if ($file['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = 'image/productListThumbnail/';
+				//basename($file['name'])：パスからファイル名部分を取得するためのPHPの組み込み関数。「.」は結合
+        $uploadedFilePath = $uploadDir . basename($file['name']);
+				//move_uploaded_file() 関数は、一時的なアップロードされたファイルを新しい場所に移動させるためのPHPの関数
+				//$file['tmp_name']: アップロードされたファイルが一時的に保存されている場所のパス。
+				//$_FILES スーパーグローバル配列内のエントリ $file['tmp_name'] によって提供
+        if (move_uploaded_file($file['tmp_name'], $uploadedFilePath)) {
+            return $uploadedFilePath;
+        } else {
+            echo "ファイルのアップロードに失敗しました。";
+        }
+    } else {
+        echo "ファイルのアップロードエラーが発生しました: " . $file['error'];
+    }
+    return null;
+}
+
+// Controller
+
+if (!isLoggedIn()) {
+    header("Location: login_form.php");
+    exit;
+}
+
+$db = connectDatabase();
+
+//POSTのリクエストが来た時
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	//POSTから受け取ったデータを$dataの連想配列に格納。'name' => $_POST['name'],の左がキー（フィールド名）、右が値（フィールドの値）。
+	$data = [
+		'name' => $_POST['name'],
+		'furigana' => $_POST['furigana'],
+		'item_description' => $_POST['item_description'],
+		'quantity' => $_POST['quantity'],
+		'price' => $_POST['price']
+	];
+	//POSTで送った画像ファイルは$_FILES['image']で取得
+	$imagePath = handleFileUpload($_FILES['image']);
+	saveItem($db, $data, $imagePath);
+	//productList.phpに遷移
+	header("Location: productList.php");
+	exit;
+}
+
+// View
+
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -67,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script src="javascript/addData.js" defer></script>
 </head>
 <body>
-<form action="addData.php" method="post"  enctype="multipart/form-data">
+<form action="addData.php" method="post" enctype="multipart/form-data">
 
 <header class="addData__header">
 	<a href="productList.php" class="button">
@@ -86,18 +124,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<h2 class="h2_subtitle">詳細</h2>
 	<div class="add-data__wrapper-name-img">
 		<div class="add-data__wrapper-name">
-			<div class="form__wrapper-input">
-				<input type="text" name="name" required class="add-data__input" placeholder="名前">
-			</div>
-			<div class="form__wrapper-input">
-				<input type="text" name="furigana" required class="add-data__input" placeholder="フリガナ">
-			</div>
+				<div class="form__wrapper-input">
+					<input type="text" name="name" required class="add-data__input" placeholder="名前">
+				</div>
+				<div class="form__wrapper-input">
+					<input type="text" name="furigana" required class="add-data__input" placeholder="フリガナ">
+				</div>
 		</div>
 		<div class="add-data__wrapper-img-edit" id="imageEditButton">
-			<div class="add-data__data__wrapper-input-img">
-				<img id="imagePreview" class="add-data__input-img" src="https://placehold.jp/300x200.png" />
-			</div>
-			<div class="add-data__img-edit-button">編集</div>
+				<div class="add-data__data__wrapper-input-img">
+					<img id="imagePreview" class="add-data__input-img" src="https://placehold.jp/300x200.png" />
+				</div>
+				<div class="add-data__img-edit-button">編集</div>
 		</div>
 	</div>
 	<input type="file" id="imageUpload" name="image" accept="image/*" style="display: none;">

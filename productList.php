@@ -1,44 +1,71 @@
 <?php
+// Model
 // セッション開始
 session_start();
 
-// ログイン状態の確認 isset() は、変数が存在しているかどうかをチェック
-if (!isset($_SESSION['id'])) { // ログインしていない場合
-	// ログインページにリダイレクト header() 関数は、HTTPヘッダーの「Location」を設定
-	header("Location: login_form.php");
-	exit; // リダイレクト後、スクリプトを終了
+//ログイン状態を確認 isset() は、変数が存在しているかどうかをチェック
+function isLoggedIn() {
+  return isset($_SESSION['id']);
 }
 
-// データベース接続 PDO(PHP Data Objects), PHPが提供するデータベースアクセスのための共通インターフェース
-$db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
+// データベース接続：PDOはPHP Data Objects, PHPが提供するデータベースアクセスのための共通インターフェース
+function connectDatabase() {
+	// エラーが起こる可能性のあるものはtryに入れる。エラーが起きたらcatchの処理を行う
+	try {
+		$db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
+		return $db;
+	} catch (PDOException $e) {
+		echo 'データベース接続失敗: ' . $e->getMessage();
+		exit;
+	}
+}
 
-// テーブル作成のSQL
-$sql = "CREATE TABLE IF NOT EXISTS items(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(50),
-	furigana  VARCHAR(255),
-	item_description VARCHAR(255),
-	quantity INT,
-	price INT,
-	image_path VARCHAR(255)
-)";
+function createTable($db) {
+	//テーブルを作成するSQL
+	$sql = "CREATE TABLE IF NOT EXISTS items(
+		id INT AUTO_INCREMENT PRIMARY KEY,
+		name VARCHAR(50),
+		furigana VARCHAR(255),
+		item_description VARCHAR(255),
+		quantity INT,
+		price INT,
+		image_path VARCHAR(255)
+	)";
+	//PHPのPDO (PHP Data Objects) クラスを使用して、データベースに対してSQLコマンドを実行するためのメソッドです。具体的には、exec メソッドはSQL文を実行し、その影響を受けた行数を返します。
+	$db->exec($sql);
+}
 
-//テーブルに新しいカラムを追加(必要ないかも)
-$sql2 = "ALTER TABLE items 
-	ADD COLUMN furigana  VARCHAR(255),
-	ADD COLUMN item_description VARCHAR(255),
-	ADD COLUMN price INT,
-	ADD COLUMN image_path VARCHAR(255)
-";
-
-// SQLの実行
-$db->exec($sql);
-$db->exec($sql2);
+//テーブルに新しいカラムを追加するときに使用した
+function alterTable($db) {
+	$sql = "ALTER TABLE items 
+		ADD COLUMN furigana VARCHAR(255),
+		ADD COLUMN item_description VARCHAR(255),
+		ADD COLUMN price INT,
+		ADD COLUMN image_path VARCHAR(255)";
+	$db->exec($sql);
+}
 
 //ID初期化
-$id_initialization = "ALTER TABLE items AUTO_INCREMENT = 1";
-$statement = $db->prepare($id_initialization);
-$statement->execute();
+function initializeId($db) {
+	$sql = "ALTER TABLE items AUTO_INCREMENT = 1";
+	$statement = $db->prepare($sql);
+	$statement->execute();
+}
+
+// Controller
+
+if (!isLoggedIn()) {
+	// ログインページにリダイレクト header() 関数は、HTTPヘッダーの「Location」を設定
+	header("Location: login_form.php");
+	exit;
+}
+
+$db = connectDatabase();
+createTable($db);
+alterTable($db);
+initializeId($db);
+
+// View
 ?>
 
 <!DOCTYPE html>
