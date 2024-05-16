@@ -41,28 +41,38 @@ function saveItem($db, $data, $imagePath = null) {
 }
 
 function handleFileUpload($file) {
-    if ($file['error'] === UPLOAD_ERR_NO_FILE) {
-        // ファイルがアップロードされなかった場合
-        return null;
-    }
-		//UPLOAD_ERR_OK：アップロードされたファイルにエラーがないことを示す
-    if ($file['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = 'image/productListThumbnail/';
-				//basename($file['name'])：パスからファイル名部分を取得するためのPHPの組み込み関数。「.」は結合
-        $uploadedFilePath = $uploadDir . basename($file['name']);
-				//move_uploaded_file() 関数は、一時的なアップロードされたファイルを新しい場所に移動させるためのPHPの関数
-				//$file['tmp_name']: アップロードされたファイルが一時的に保存されている場所のパス。
-				//$_FILES スーパーグローバル配列内のエントリ $file['tmp_name'] によって提供
-        if (move_uploaded_file($file['tmp_name'], $uploadedFilePath)) {
-            return $uploadedFilePath;
-        } else {
-            echo "ファイルのアップロードに失敗しました。";
-        }
-    } else {
-        echo "ファイルのアップロードエラーが発生しました: " . $file['error'];
-    }
-    return null;
+	if ($file['error'] === UPLOAD_ERR_NO_FILE) {
+			// ファイルがアップロードされなかった場合
+			return null;
+	}
+	//UPLOAD_ERR_OK：アップロードされたファイルにエラーがないことを示す
+	if ($file['error'] === UPLOAD_ERR_OK) {
+		//アップロード先のディレクトリパスを指定
+		$uploadDir = 'image/productListThumbnail/';
+		//file_exists() 関数を使って、指定したディレクトリが存在するか確認
+		if (!file_exists($uploadDir)) {
+			//mkdir() 関数を使って、指定されたパスにディレクトリを作成
+			//第二引数にディレクトリのパーミッション (0775) を指定（所有者とグループに読み書き権限、その他のユーザーに読み取り権限を付与）
+			//第三引数に true を指定し、必要な親ディレクトリも含めて再帰的にディレクトリを作成
+			mkdir($uploadDir, 0775, true);
+		}
+		//basename($file['name'])：パスからファイル名部分を取得するためのPHPの組み込み関数。「.」は結合
+		$uploadedFilePath = $uploadDir . basename($file['name']);
+		//move_uploaded_file() 関数は、一時的なアップロードされたファイルを新しい場所に移動させるためのPHPの関数
+		//$file['tmp_name']: アップロードされたファイルが一時的に保存されている場所のパス。
+		//$_FILES スーパーグローバル配列内のエントリ $file['tmp_name'] によって提供
+		if (move_uploaded_file($file['tmp_name'], $uploadedFilePath)) {
+			return $uploadedFilePath;
+		} else {
+			echo "ファイルのアップロードに失敗しました。";
+			return null;
+		}
+	} else {
+		echo "ファイルのアップロードエラーが発生しました: " . $file['error'];
+		return null;
+	}
 }
+
 
 // Controller
 
