@@ -10,6 +10,8 @@ $password = "";
 //DBに接続
 $db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', $username, $password);
 
+
+//Model
 // テーブル作成のSQL
 $sql = "CREATE TABLE IF NOT EXISTS users(
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,7 +19,6 @@ $sql = "CREATE TABLE IF NOT EXISTS users(
     mail VARCHAR(50),
     pass VARCHAR(255)
 )";
-
 // SQLの実行
 $db->exec($sql);
 
@@ -35,7 +36,8 @@ $stmt->execute();
 //fetch() メソッドは、実行されたクエリから1行の結果セット(データベースから取得した1行のデータ)を取得します。
 $member = $stmt->fetch();
 
-//users tableの、mail（$member['mail']）と、signup.phpのフォーム画面で入力したメアド$mailと一致していないか確認
+//controller
+//users tableの、mail（$member['mail']）と、signup.phpのフォーム画面で入力したメアド$mailを比較
 if ($member['mail'] === $mail) {
     $msg = '同じメールアドレスが存在します。';
     $link = '<a href="signup.php" class="internal-link">戻る</a>';
@@ -50,6 +52,8 @@ if ($member['mail'] === $mail) {
     $msg = '会員登録が完了しました';
     $link = '<a href="login_form.php" class="internal-link">ログインページ</a>';
 }
+
+//View
 ?>
 
 <!DOCTYPE html>
