@@ -1,12 +1,14 @@
 <?php
-//フォームからの値をそれぞれ変数に代入 dsn=データソースネーム
+//Controller 
+//フォームからの値をそれぞれ変数に代入
 $name = $_POST['name'];
 $mail = $_POST['mail'];
+//PWをハッシュ化。PASSWORD_DEFAULTはPHPが提供するデフォルトのハッシュアルゴリズム
 $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 $username = "root";
 $password = "";
-
-$db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
+//DBに接続
+$db = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', $username, $password);
 
 // テーブル作成のSQL
 $sql = "CREATE TABLE IF NOT EXISTS users(
@@ -19,18 +21,21 @@ $sql = "CREATE TABLE IF NOT EXISTS users(
 // SQLの実行
 $db->exec($sql);
 
-//フォームに入力されたmailがすでに登録されていないかチェック
-
+//フォームに入力されたmailがすでに登録されていないか検索
 $sql_mail = "SELECT * FROM users WHERE mail = :mail";
 // stmt=ステートメント
+//SQLを実行する前の準備。プレースホルダ（データベースクエリの中で、実際の値が代入される前に、仮の値として使用されるもの）
+// を使いSQLインジェクションを防ぐ
 $stmt = $db->prepare($sql_mail);
-// SQLクエリ内のプレースホルダー :mail に、変数 $mail の値を結び付ける（バインドする）ためのコード
+// SQLクエリ内のプレースホルダー :mail に、変数 $mail の値を結び付ける（バインドする）
 $stmt->bindValue(':mail', $mail);
 // クエリ実行
 $stmt->execute();
 // 結果を取得
+//fetch() メソッドは、実行されたクエリから1行の結果セット(データベースから取得した1行のデータ)を取得します。
 $member = $stmt->fetch();
 
+//users tableの、mail（$member['mail']）と、signup.phpのフォーム画面で入力したメアド$mailと一致していないか確認
 if ($member['mail'] === $mail) {
     $msg = '同じメールアドレスが存在します。';
     $link = '<a href="signup.php" class="internal-link">戻る</a>';

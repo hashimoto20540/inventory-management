@@ -59,6 +59,11 @@
 	margin: auto;
 }
 
+.form__botton2:hover{
+	background-color: rgb(52, 126, 230);
+	cursor: pointer;
+}
+
 .form__h1-2 {
 	font-weight: lighter;
 	text-align: center;

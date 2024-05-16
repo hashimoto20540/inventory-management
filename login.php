@@ -1,4 +1,7 @@
 <?php
+//Control
+
+//Model
 session_start();
 $mail = $_POST['mail'];
 $dsn = "mysql:host=localhost; dbname=inventory_management; charset=utf8";
@@ -35,6 +38,8 @@ if (password_verify($_POST['pass'], $member['pass'])) {
     $msg = 'メールアドレスもしくはパスワードが間違っています。';
     $link = '<a href="login_form.php" class="internal-link">戻る</a>';
 }
+
+//View
 ?>
 
 <!DOCTYPE html>
