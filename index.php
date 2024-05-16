@@ -1,26 +1,39 @@
 <?php
-
+// Model
+//セッションの有効期限を指定する
 $cookie_lifetime = 300;
 //PHPセッション開始：PHPのセッションは、ユーザーがウェブサイトを訪問している間に、サーバー側でデータを保存し、複数のページにわたってそのデータを共有するための仕組み
-//セッションの有効期限を指定する
 session_start([
-    'cookie_lifetime' => $cookie_lifetime,
+  'cookie_lifetime' => $cookie_lifetime,
 ]);
 
-// ログイン状態の確認 isset() は、変数が存在しているかどうかをチェック
-if (!isset($_SESSION['id'])) { // ログインしていない場合
-	// ログインページにリダイレクト header() 関数は、HTTPヘッダーの「Location」を設定
-	header("Location: login_form.php");
-	exit; // リダイレクト後、スクリプトを終了
+// ログインしているか確認。isset() は、変数が存在しているかどうかをチェック。ログインしていない場合は何も返さない。
+function isLoggedIn() {
+  return isset($_SESSION['id']);
 }
 
-$username = $_SESSION['name'];
-//htmlspecialchars 関数を使って、ユーザー名をHTMLエスケープします。これにより、ユーザー名に特殊文字（例: <, >, & など）が含まれていても、HTMLとして解釈されずに表示。XSS攻撃を防ぐ
-//\ENT_QUOTES: シングルクォート（'）とダブルクォート（"）の両方をエスケープ。
-$msg = 'こんにちは' . htmlspecialchars($username, \ENT_QUOTES, 'UTF-8') . 'さん';
+//usernameを取得
+function getUsername() {
+	//htmlspecialchars 関数を使って、ユーザー名をHTMLエスケープします。これにより、ユーザー名に特殊文字（例: <, >, & など）が含まれていても、HTMLとして解釈されずに表示。XSS攻撃を防ぐ
+	//\ENT_QUOTES: シングルクォート（'）とダブルクォート（"）の両方をエスケープ。
+  return htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8');
+}
+
+// Controller
+// ログインしていない場合は以下の処理を実施
+if (!isLoggedIn()) {
+	// ログインページにリダイレクト。header() 関数は、HTTPヘッダーの「Location」を設定
+	header("Location: login_form.php");
+	// リダイレクト後、スクリプトを終了
+	exit;
+}
+
+$username = getUsername();
+$msg = 'こんにちは' . $username . 'さん';
 $link_productList = '<a href="productList.php">商品管理ページへ</a>';
 $link_logout = '<a href="logout.php">ログアウト</a>';
 
+//View
 ?>
 <!DOCTYPE html>
 <html lang="ja">
