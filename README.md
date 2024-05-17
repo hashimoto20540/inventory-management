@@ -68,3 +68,5 @@ https://qiita.com/ramuneru/items/db43589551dd0c00fef9<br>
 https://squareup.com/dashboard/<br>
 ・【書籍】達人に学ぶDB設計徹底指南書を読んで学んだこと【第4章】：多対多のER図作成時に参考<br>
 https://kazuki13070311.hatenadiary.jp/entry/2021/07/17/002811<br>
+・仕様書とは？開発事例をもとに成功する仕様書の書き方を解説<br>
+https://monstar-lab.com/dx/solution/howto-specification/<br>
