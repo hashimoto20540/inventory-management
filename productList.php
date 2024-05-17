@@ -35,16 +35,6 @@ function createTable($db) {
 	$db->exec($sql);
 }
 
-//テーブルに新しいカラムを追加するときに使用した
-function alterTable($db) {
-	$sql = "ALTER TABLE items 
-		ADD COLUMN furigana VARCHAR(255),
-		ADD COLUMN item_description VARCHAR(255),
-		ADD COLUMN price INT,
-		ADD COLUMN image_path VARCHAR(255)";
-	$db->exec($sql);
-}
-
 //ID初期化
 function initializeId($db) {
 	$sql = "ALTER TABLE items AUTO_INCREMENT = 1";
@@ -62,7 +52,6 @@ if (!isLoggedIn()) {
 
 $db = connectDatabase();
 createTable($db);
-alterTable($db);
 initializeId($db);
 
 // View
