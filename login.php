@@ -47,7 +47,7 @@ if (password_verify($_POST['pass'], $member['pass'])) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ログイン完了</title>
+<title>ログイン</title>
 <link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
 <body>
