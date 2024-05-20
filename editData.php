@@ -56,34 +56,46 @@ function deleteItem($db, $id) {
 
 //テーブルを更新
 function updateItem($db, $data) {
-	//更新する各カラムとその新しい値を指定
-	//:name, :furigana, :item_description, :quantity, :price, :image_path はプレースホルダーであり、実際の値は後でバインドされます。
-	$sql = "UPDATE items SET 
-        name = :name,
-        furigana = :furigana,
-        item_description = :item_description,
-        price = :price,
-        image_path = :image_path
-    WHERE id = :id";
-	$statement = $db->prepare($sql);
-	$statement->execute([
-		':name' => $data['name'],
-		':furigana' => $data['furigana'],
-		':item_description' => $data['item_description'],
-		':price' => $data['price'],
-		':image_path' => $data['image_path'],
-		':id' => $data['id']
-	]);
+    try {
+        // トランザクション開始: 複数の更新がある場合、全体が成功するかどうかを確認
+        $db->beginTransaction();
 
-    //在庫テーブルを更新
-	$sql_quantity = "UPDATE quantities SET
-        quantity = :quantity
-    WHERE item_id = :item_id";
-    $statement = $db->prepare($sql_quantity);
-    $statement->execute([
-        ':quantity' => $data['quantity'],
-        ':item_id' => $data['id']
-    ]);
+        // itemsテーブルを更新
+        $sql = "UPDATE items SET 
+            name = :name,
+            furigana = :furigana,
+            item_description = :item_description,
+            price = :price,
+            image_path = :image_path
+        WHERE id = :id";
+        $statement = $db->prepare($sql);
+        $statement->execute([
+            ':name' => $data['name'],
+            ':furigana' => $data['furigana'],
+            ':item_description' => $data['item_description'],
+            ':price' => $data['price'],
+            ':image_path' => $data['image_path'],
+            ':id' => $data['id']
+        ]);
+
+        // quantitiesテーブルを更新
+        $sql_quantity = "UPDATE quantities SET
+            quantity = :quantity
+        WHERE item_id = :item_id";
+        $statement = $db->prepare($sql_quantity);
+        $statement->execute([
+            ':quantity' => $data['quantity'],
+            ':item_id' => $data['id']
+        ]);
+
+        // トランザクションをコミット: すべての操作が成功した場合、$db->commit()でトランザクションをコミットし、変更をデータベースに適用
+        $db->commit();
+        echo "データが正常に更新されました。";
+    } catch (PDOException $e) {
+        // トランザクションをロールバック: 途中でエラーが発生した場合、catchブロック内で$db->rollBack()を呼び出してトランザクションをロールバックし、変更を元に戻します。
+        $db->rollBack();
+        echo "エラー: " . $e->getMessage();
+    }
 }
 
 //指定されたIDを持つアイテム（商品）の情報をデータベースから取得.その情報を連想配列として返す
@@ -105,6 +117,7 @@ function getItemById($db, $id) {
 	$statement = $db->prepare($sql);
 	//:id というプレースホルダーに、指定されたIDの値をバインドする
 	$statement->execute([':id' => $id]);
+    
 	//実行したクエリから取得した結果を取得します。fetch(PDO::FETCH_ASSOC) は、１行を、連想配列の形式で結果を返す
 	//array('id' => 1,'name' => 'Alice','age' => 30)のようなもの
 	return $statement->fetch(PDO::FETCH_ASSOC);
@@ -175,6 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
         'price' => $_POST['price'],
         'image_path' => $edit_image_path
     ];
+
     updateItem($db, $data);
 		//商品一覧画面にリダイレクト
     // header("Location: productList.php");
