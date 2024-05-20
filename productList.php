@@ -22,7 +22,8 @@ function connectDatabase() {
 
 function createTable($db) {
 	//テーブルを作成するSQL
-	$sql = "CREATE TABLE IF NOT EXISTS items(
+	//商品テーブル
+	$sql_items = "CREATE TABLE IF NOT EXISTS items(
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(50),
 		furigana VARCHAR(255),
@@ -30,9 +31,8 @@ function createTable($db) {
 		price INT,
 		image_path VARCHAR(255)
 	)";
-	//PHPのPDO (PHP Data Objects) クラスを使用して、データベースに対してSQLコマンドを実行するためのメソッドです。具体的には、exec メソッドはSQL文を実行し、その影響を受けた行数を返します。
-	$db->exec($sql);
 
+	//在庫テーブル items:quantities = 1:n
 	$sql_quantities = "CREATE TABLE IF NOT EXISTS quantities(
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		item_id INT,
@@ -44,7 +44,28 @@ function createTable($db) {
 			-- items テーブルの行が削除されたときに、その id を参照する quantities テーブルの行も自動的に削除されるようにします。
 			ON DELETE CASCADE
 	)";
+
+	// カテゴリーテーブル items:categories = n:n
+	$sql_categories = "CREATE TABLE IF NOT EXISTS categories (
+			id INT AUTO_INCREMENT PRIMARY KEY,
+			name VARCHAR(50) NOT NULL
+	)";
+
+	// 商品テーブルと、カテゴリーテーブルの中間テーブル
+	$sql_item_categories = "CREATE TABLE IF NOT EXISTS item_categories (
+			item_id INT,
+			category_id INT,
+			-- (item_id, category_id): 複合主キーを設定しています。これにより、item_idとcategory_idの組み合わせが一意であることを保証します。つまり、同じ商品が同じカテゴリーに複数回関連付けられることはありません。
+			PRIMARY KEY (item_id, category_id),
+			FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE,
+			FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+	)";
+
+	//PHPのPDO (PHP Data Objects) クラスを使用して、データベースに対してSQLコマンドを実行するためのメソッドです。具体的には、exec メソッドはSQL文を実行し、その影響を受けた行数を返します。
+	$db->exec($sql_items);
 	$db->exec($sql_quantities);
+	$db->exec($sql_categories);
+	$db->exec($sql_item_categories);
 }
 
 //ID初期化
