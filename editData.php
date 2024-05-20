@@ -18,12 +18,12 @@ function createTable($db) {
         name VARCHAR(50),
         furigana VARCHAR(50),
         item_description TEXT,
-        quantity INT,
         price DECIMAL(10, 2),
         image_path VARCHAR(255)
     )";
 		//$db->exec($sql) は、構築したSQLクエリをデータベースに対して実行
     $db->exec($sql);
+
 }
 
 //テーブル内の自動増分（AUTO_INCREMENT）値をリセット ※いらないかも
@@ -54,27 +54,54 @@ function deleteItem($db, $id) {
 	}
 }
 
-
 //テーブルを更新
 function updateItem($db, $data) {
 	//更新する各カラムとその新しい値を指定
 	//:name, :furigana, :item_description, :quantity, :price, :image_path はプレースホルダーであり、実際の値は後でバインドされます。
-	$sql = "UPDATE items SET name = :name, furigana = :furigana, item_description = :item_description, quantity = :quantity, price = :price, image_path = :image_path WHERE id = :id";
+	$sql = "UPDATE items SET 
+        name = :name,
+        furigana = :furigana,
+        item_description = :item_description,
+        price = :price,
+        image_path = :image_path
+    WHERE id = :id";
 	$statement = $db->prepare($sql);
 	$statement->execute([
 		':name' => $data['name'],
 		':furigana' => $data['furigana'],
 		':item_description' => $data['item_description'],
-		':quantity' => $data['quantity'],
 		':price' => $data['price'],
 		':image_path' => $data['image_path'],
 		':id' => $data['id']
 	]);
+
+    //在庫テーブルを更新
+	$sql_quantity = "UPDATE quantities SET
+        quantity = :quantity
+    WHERE item_id = :item_id";
+    $statement = $db->prepare($sql_quantity);
+    $statement->execute([
+        ':quantity' => $data['quantity'],
+        ':item_id' => $data['id']
+    ]);
 }
 
 //指定されたIDを持つアイテム（商品）の情報をデータベースから取得.その情報を連想配列として返す
 function getItemById($db, $id) {
-	$sql = "SELECT * FROM items WHERE id = :id";
+	$sql = "SELECT 
+        items.id AS item_id,
+        items.name,
+        items.furigana,
+        items.item_description,
+        items.price,
+        items.image_path,
+        quantities.id AS quantity_id,
+        quantities.quantity
+    FROM items
+    INNER JOIN 
+		quantities ON items.id = quantities.item_id
+    WHERE items.id = :id";
+
 	$statement = $db->prepare($sql);
 	//:id というプレースホルダーに、指定されたIDの値をバインドする
 	$statement->execute([':id' => $id]);
@@ -150,8 +177,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     ];
     updateItem($db, $data);
 		//商品一覧画面にリダイレクト
-    header("Location: productList.php");
-    exit;
+    // header("Location: productList.php");
+    // exit;
 }
 
 // productListから遷移した際、値を$_GET変数から取得

@@ -27,7 +27,6 @@ function createTable($db) {
 		name VARCHAR(50),
 		furigana VARCHAR(255),
 		item_description VARCHAR(255),
-		quantity INT,
 		price INT,
 		image_path VARCHAR(255)
 	)";
@@ -125,14 +124,26 @@ initializeId($db);
 					<th></th>
 				</tr>
 				<?php
-				// 在庫情報の表示
-				$sql = "SELECT * FROM items";
+				// 結合して全行を出力するSQL文
+				$sql = "SELECT 
+					items.id AS item_id,
+					items.name,
+					items.furigana,
+					items.item_description,
+					items.price,
+					items.image_path,
+					quantities.id AS quantity_id,
+					quantities.quantity
+				FROM 
+					items
+				INNER JOIN 
+					quantities ON items.id = quantities.item_id";
 				$statement = $db->prepare($sql);
 				$statement->execute();
 
 				while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 				?>
-				<tr data-id="<?php echo htmlspecialchars($row['id']); ?>"
+				<tr data-id="<?php echo htmlspecialchars($row['item_id']); ?>"
 					data-name="<?php echo htmlspecialchars($row['name']); ?>"
 					data-quantity="<?php echo htmlspecialchars($row['quantity']); ?>"
 					data-furigana="<?php echo htmlspecialchars($row['furigana']); ?>"
@@ -141,7 +152,7 @@ initializeId($db);
 					data-image="<?php echo htmlspecialchars($row['image_path']); ?>"
 					title="<?php echo htmlspecialchars($row['name']); ?>の商品編集ページに移動します"
 					enctype="multipart/form-data">
-						<td><?php echo htmlspecialchars($row['id']); ?></td>
+						<td><?php echo htmlspecialchars($row['item_id']); ?></td>
 						<td>
 							<div class="productList__table--wapper-image">
 								<?php if (!empty($row['image_path'])) : ?>

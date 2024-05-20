@@ -24,19 +24,30 @@ function saveItem($db, $data, $imagePath = null) {
 	//$sql は実行したいSQL文の文字列を記載
 	//items テーブルに、挿入するカラムを指定
 	//VALUES句で、挿入する値を指定。:で始まる名前（プレースホルダー）は、後で実際の値に置換。
-	$sql = "INSERT INTO items (name, furigana, item_description, quantity, price, image_path) 
-					VALUES (:name, :furigana, :item_description, :quantity, :price, :image_path)";
+	$sql = "INSERT INTO items (name, furigana, item_description, price, image_path) 
+					VALUES (:name, :furigana, :item_description, :price, :image_path)";
 	//SQL文をプリペアドステートメント(実行するSQL文を事前に解析し、効率的かつ安全に実行するための仕組み)に変換
 	$statement = $db->prepare($sql);
 	//プレースホルダを具体的な値に置換
 	//$statement->execute() は、プリペアドステートメントを実行するためのメソッド
 	$statement->execute([
-			':name' => $data['name'],
-			':furigana' => $data['furigana'],
-			':item_description' => $data['item_description'],
-			':quantity' => $data['quantity'],
-			':price' => $data['price'],
-			':image_path' => $imagePath
+		':name' => $data['name'],
+		':furigana' => $data['furigana'],
+		':item_description' => $data['item_description'],
+		':price' => $data['price'],
+		':image_path' => $imagePath
+	]);
+
+	// 最後に挿入されたIDを取得
+	$lastInsertId = $db->lastInsertId();
+
+	//在庫テーブルに保存
+	$sql_quantity = "INSERT INTO quantities (item_id, quantity) 
+									 VALUES (:item_id, :quantity)";
+	$statement = $db->prepare($sql_quantity);
+	$statement->execute([
+		':item_id' => $lastInsertId,
+		':quantity' => $data['quantity']
 	]);
 }
 
