@@ -117,7 +117,7 @@ function getItemById($db, $id) {
 	$statement = $db->prepare($sql);
 	//:id というプレースホルダーに、指定されたIDの値をバインドする
 	$statement->execute([':id' => $id]);
-    
+
 	//実行したクエリから取得した結果を取得します。fetch(PDO::FETCH_ASSOC) は、１行を、連想配列の形式で結果を返す
 	//array('id' => 1,'name' => 'Alice','age' => 30)のようなもの
 	return $statement->fetch(PDO::FETCH_ASSOC);
@@ -191,8 +191,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
 
     updateItem($db, $data);
 		//商品一覧画面にリダイレクト
-    // header("Location: productList.php");
-    // exit;
+    header("Location: productList.php");
+    exit;
 }
 
 // productListから遷移した際、値を$_GET変数から取得
@@ -282,7 +282,7 @@ if (isset($_GET['id'])) {
     <div class="body__wrapper-delete-button">
         <button type="button" id="deleteButton">削除</button>
     </div>
-    <input type="hidden" name="id" value="<?php echo htmlspecialchars($item['id']); ?>">
+    <input type="hidden" name="id" value="<?php echo htmlspecialchars($item['item_id']); ?>">
     <input type="hidden" name="delete" id="deleteInput" value="false">
 </div>
 
