@@ -92,12 +92,12 @@ initializeId($db);
 		</nav>
 
 		<main class="content">
-			<form action="addData.php" method="GET">
+			<form action="" method="GET">
 				<div class="information-bar product-list__information-bar">
 					<input class="content__information-box product-list__information-box" placeholder="名前、説明、SKU、GTINのいずれかで検索">
 					</input>	
 					<div class="flex-grow"></div>
-					<input type="submit" value="商品を登録" onclick="getLastID()" class="content__information-box product-list__register-button">
+					<a href="addData.php" class="content__information-box product-list__register-button"><div>商品を登録</div></a>
 				</div>
 			</form>
 			<table border="1" id="table_items">
@@ -143,9 +143,6 @@ initializeId($db);
 						<td></td>
 						<td><?php echo htmlspecialchars($row['quantity']); ?></td>
 						<td><?php echo htmlspecialchars($row['price']); ?></td>
-						<!-- <td>
-							<img src="image/more_horiz_icon.svg" alt="inventory_icon" width="24" height="24" >
-						</td> -->
 					</tr>
 				<?php
 				}
