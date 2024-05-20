@@ -73,33 +73,32 @@ function createTable($db) {
 
 	// サンプルデータを挿入するSQL
 	// カテゴリーテーブルにサンプルデータを挿入
-	$sql_insert_categories = "INSERT INTO categories (name) VALUES 
-			('フルーツ'),
-			('野菜'),
-			('その他')";
+	// $sql_insert_categories = "INSERT INTO categories (name) VALUES 
+	// 		('フルーツ'),
+	// 		('野菜'),
+	// 		('その他')";
 
-	// 商品テーブルにサンプルデータを挿入
-	$sql_insert_items = "INSERT INTO items (name, furigana, item_description, price, image_path) VALUES 
-			('Apple', 'あっぷる', 'A sweet red fruit', 100, 'path/to/apple.jpg'),
-			('Banana', 'ばなな', 'A yellow fruit rich in potassium', 50, 'path/to/banana.jpg'),
-			('Carrot', 'にんじん', 'A crunchy orange vegetable', 70, 'path/to/carrot.jpg')";
+	// // 商品テーブルにサンプルデータを挿入
+	// $sql_insert_items = "INSERT INTO items (name, furigana, item_description, price, image_path) VALUES 
+	// 		('Apple', 'あっぷる', 'A sweet red fruit', 100, 'path/to/apple.jpg'),
+	// 		('Banana', 'ばなな', 'A yellow fruit rich in potassium', 50, 'path/to/banana.jpg'),
+	// 		('Carrot', 'にんじん', 'A crunchy orange vegetable', 70, 'path/to/carrot.jpg')";
 
-	// 在庫テーブルにサンプルデータを挿入
-	$sql_insert_quantities = "INSERT INTO quantities (item_id, quantity) VALUES 
-			(6, 100),
-			(7, 200),
-			(8, 150)";
+	// // 在庫テーブルにサンプルデータを挿入
+	// $sql_insert_quantities = "INSERT INTO quantities (item_id, quantity) VALUES 
+	// 		(6, 100),
+	// 		(7, 200),
+	// 		(8, 150)";
 
 	// 中間テーブルにサンプルデータを挿入
 	$sql_insert_item_categories = "INSERT INTO item_categories (item_id, category_id) VALUES 
-			(6, 1),  -- Apple belongs to Fruits
-			(7, 1),  -- Banana belongs to Fruits
-			(8, 2)   -- Carrot belongs to Vegetables";
+			(1, 1),  -- Apple belongs to Fruits
+			(2, 1),  -- Banana belongs to Fruits
+			(3, 1),
+			(4, 2),
+			(5, 2)";
 
 	// サンプルデータを挿入
-	$db->exec($sql_insert_categories);
-	$db->exec($sql_insert_items);
-	$db->exec($sql_insert_quantities);
 	$db->exec($sql_insert_item_categories);
 
 
