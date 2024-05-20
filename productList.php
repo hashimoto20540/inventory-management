@@ -67,42 +67,6 @@ function createTable($db) {
 	$db->exec($sql_categories);
 	$db->exec($sql_item_categories);
 
-
-
-
-
-	// サンプルデータを挿入するSQL
-	// カテゴリーテーブルにサンプルデータを挿入
-	// $sql_insert_categories = "INSERT INTO categories (name) VALUES 
-	// 		('フルーツ'),
-	// 		('野菜'),
-	// 		('その他')";
-
-	// // 商品テーブルにサンプルデータを挿入
-	// $sql_insert_items = "INSERT INTO items (name, furigana, item_description, price, image_path) VALUES 
-	// 		('Apple', 'あっぷる', 'A sweet red fruit', 100, 'path/to/apple.jpg'),
-	// 		('Banana', 'ばなな', 'A yellow fruit rich in potassium', 50, 'path/to/banana.jpg'),
-	// 		('Carrot', 'にんじん', 'A crunchy orange vegetable', 70, 'path/to/carrot.jpg')";
-
-	// // 在庫テーブルにサンプルデータを挿入
-	// $sql_insert_quantities = "INSERT INTO quantities (item_id, quantity) VALUES 
-	// 		(6, 100),
-	// 		(7, 200),
-	// 		(8, 150)";
-
-	// 中間テーブルにサンプルデータを挿入
-	$sql_insert_item_categories = "INSERT INTO item_categories (item_id, category_id) VALUES 
-			(1, 1),  -- Apple belongs to Fruits
-			(2, 1),  -- Banana belongs to Fruits
-			(3, 1),
-			(4, 2),
-			(5, 2)";
-
-	// サンプルデータを挿入
-	$db->exec($sql_insert_item_categories);
-
-
-
 }
 
 //ID初期化
@@ -184,25 +148,31 @@ initializeId($db);
 				<?php
 				// 結合して全行を出力するSQL文
 				$sql = "SELECT 
-					items.id AS item_id,
-					items.name,
-					items.furigana,
-					items.item_description,
-					items.price,
-					items.image_path,
-					quantities.id AS quantity_id,
-					quantities.quantity
+						items.id AS item_id,
+						items.name AS item_name,
+						items.furigana,
+						items.item_description,
+						items.price,
+						items.image_path,
+						quantities.id AS quantity_id,
+						quantities.quantity,
+						categories.name AS category_name
 				FROM 
-					items
+						items
 				INNER JOIN 
-					quantities ON items.id = quantities.item_id";
+						quantities ON items.id = quantities.item_id
+				INNER JOIN 
+						item_categories ON items.id = item_categories.item_id
+				INNER JOIN 
+						categories ON item_categories.category_id = categories.id";
+
 				$statement = $db->prepare($sql);
 				$statement->execute();
 
 				while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 				?>
 				<tr data-id="<?php echo htmlspecialchars($row['item_id']); ?>"
-					data-name="<?php echo htmlspecialchars($row['name']); ?>"
+					data-name="<?php echo htmlspecialchars($row['item_name']); ?>"
 					data-quantity="<?php echo htmlspecialchars($row['quantity']); ?>"
 					data-furigana="<?php echo htmlspecialchars($row['furigana']); ?>"
 					data-description="<?php echo htmlspecialchars($row['item_description']); ?>"
@@ -220,9 +190,9 @@ initializeId($db);
 								<?php endif; ?>
 							</div>
 						</td>
-						<td><?php echo htmlspecialchars($row['name']); ?></td>
+						<td><?php echo htmlspecialchars($row['item_name']); ?></td>
 						<td><?php echo htmlspecialchars($row['furigana']); ?></td>
-						<td></td>
+						<td><?php echo htmlspecialchars($row['category_name']); ?></td>
 						<td><?php echo htmlspecialchars($row['quantity']); ?></td>
 						<td><?php echo htmlspecialchars($row['price']); ?></td>
 					</tr>
