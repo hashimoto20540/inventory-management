@@ -33,6 +33,19 @@ function createTable($db) {
 	)";
 	//PHPのPDO (PHP Data Objects) クラスを使用して、データベースに対してSQLコマンドを実行するためのメソッドです。具体的には、exec メソッドはSQL文を実行し、その影響を受けた行数を返します。
 	$db->exec($sql);
+
+	$sql_quantities = "CREATE TABLE IF NOT EXISTS quantities(
+		id INT AUTO_INCREMENT PRIMARY KEY,
+		item_id INT,
+		quantity INT,
+		-- CONSTRAINT fk_item: 外部キーの制約に名前を付けます(任意)
+		CONSTRAINT fk_item
+			-- FOREIGN KEY (item_id) REFERENCES items(id): item_id 列が items テーブルの id 列を参照する外部キーであることを示す
+			FOREIGN KEY (item_id) REFERENCES items(id)
+			-- items テーブルの行が削除されたときに、その id を参照する quantities テーブルの行も自動的に削除されるようにします。
+			ON DELETE CASCADE
+	)";
+	$db->exec($sql_quantities);
 }
 
 //ID初期化
