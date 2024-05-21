@@ -12,11 +12,36 @@ function isLoggedIn() {
 function connectDatabase() {
 	//データベース接続はtryを入れる
 	try {
+		// $pdo = new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
+		// $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		// return $pdo;
 		return new PDO('mysql:host=localhost;dbname=inventory_management;charset=utf8', 'root', '');
 	} catch (PDOException $e) {
 		echo 'データベース接続失敗: ' . $e->getMessage();
 		exit;
 	}
+}
+
+//テーブル内の自動増分（AUTO_INCREMENT）値をリセット ※いらないかも
+function resetAutoIncrement($db) {
+	// items テーブルの主キー列である id の自動増分値を1にリセットするためのSQLステートメント
+	$sql = "ALTER TABLE items AUTO_INCREMENT = 1";
+	$statement = $db->prepare($sql);
+	$statement->execute();
+
+	// quantitiesテーブルも初期値に
+	$sql_quantity = "ALTER TABLE quantities AUTO_INCREMENT = 1";
+	$statement = $db->prepare($sql_quantity);
+	$statement->execute();
+}
+
+function getCategoriesTable($db) {
+	// カテゴリーテーブルからデータを取得
+	// categoriesテーブルからidとnameカラムを選択するSQLクエリを実行します。
+	$stmt = $db->query('SELECT id, name FROM categories');
+	//取得したデータを連想配列としてすべてフェッチ（取得）します。この連想配列が$categoriesに格納されます。
+	$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	return $categories;
 }
 
 //商品を保存
@@ -48,6 +73,20 @@ function saveItem($db, $data, $imagePath = null) {
 	$statement->execute([
 		':item_id' => $lastInsertId,
 		':quantity' => $data['quantity']
+	]);
+}
+
+//カテゴリーを保存
+function saveCategory($db, $data) {
+	// 最後に挿入されたIDを取得
+	$lastInsertId = $db->lastInsertId();
+	//カテゴリーテーブルに保存
+	$sql_categories = "INSERT INTO item_categories (item_id, category_id) 
+									 VALUES (:item_id, :category_id)";
+	$statement = $db->prepare($sql_categories);
+	$statement->execute([
+		':item_id' => $lastInsertId,
+		':category_id' => $data['category_id']
 	]);
 }
 
@@ -93,23 +132,31 @@ if (!isLoggedIn()) {
 }
 
 $db = connectDatabase();
+$categories = getCategoriesTable($db);
+resetAutoIncrement($db);
 
 //POSTのリクエストが来た時
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	//デバック用
+	// echo '<pre>';
+	// print_r($_POST);
+	// echo '</pre>';
 	//POSTから受け取ったデータを$dataの連想配列に格納。'name' => $_POST['name'],の左がキー（フィールド名）、右が値（フィールドの値）。
 	$data = [
 		'name' => $_POST['name'],
 		'furigana' => $_POST['furigana'],
 		'item_description' => $_POST['item_description'],
 		'quantity' => $_POST['quantity'],
-		'price' => $_POST['price']
+		'price' => $_POST['price'],
+		'category_id' => $_POST['category_id']
 	];
 	//POSTで送った画像ファイルは$_FILES['image']で取得
 	$imagePath = handleFileUpload($_FILES['image']);
 	saveItem($db, $data, $imagePath);
+	saveCategory($db, $data);
 	//productList.phpに遷移
-	header("Location: productList.php");
-	exit;
+	// header("Location: productList.php");
+	// exit;
 }
 
 // View
@@ -177,12 +224,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<p>カテゴリー</p>
 	<div class="wrapper-contents--flex">
 		<img src="image/folder_icon.svg" alt="folder_icon" width="24" height="24" fill="rgb(0, 0, 0)">
-		<div class="select-box">
-			<select>
-				<option value="1">フルーツ</option>
-				<option value="2">野菜</option>
-				<option value="3">その他</option>
-			</select>
+		<div class="addData__wrapper-select-box">
+			<select name="category_id" class="addData__select-box">
+				<?php foreach ($categories as $category): ?>
+					<option value="<?php echo htmlspecialchars($category['id'], ENT_QUOTES, 'UTF-8'); ?>">
+						<?php echo htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8'); ?>
+					</option>
+				<?php endforeach; ?>
+      </select>
 		</div>
 	</div>
 </div>

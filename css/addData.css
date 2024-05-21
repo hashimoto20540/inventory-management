@@ -137,31 +137,29 @@
 
 
 
-/* デフォルトのスタイルをリセット */
-select {
+
+.addData__select-box {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  outline: none;
-  border: none;
+  border: 2px solid rgb(0, 95, 229);
   background-color: transparent;
   padding: 0.5em;
   font-size: 16px;
   cursor: pointer;
-}
-
-/* セレクトボックスのコンテナをスタイル */
-.select-box {
-  position: relative;
+  /* position: relative; */
   width: 200px;
-  border: 2px solid rgb(0, 95, 229); /* 枠線のスタイル */
   border-radius: 5px;
   overflow: hidden;
   margin-left: 10px;
 }
 
+.addData__wrapper-select-box {
+  position: relative;
+}
+
 /* 矢印アイコンのスタイル */
-.select-box::after {
+.addData__wrapper-select-box::after {
   content: '\203A'; /* 右向きの不等号のUnicode文字 */
   position: absolute;
   top: 50%;
@@ -171,16 +169,12 @@ select {
 }
 
 /* オプションのスタイル */
-.select-box select option {
+.addData__select-box option {
   padding: 0.5em;
   background-color: #fff;
 }
 
-/* ホバーエフェクト */
-.select-box select:hover,
-.select-box select:focus {
-  background-color: #f0f0f0;
+.addData__select-box:focus-within {
+  border: solid rgb(0, 95, 229) 3px;
+  outline: none;
 }
-
-
-
