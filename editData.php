@@ -26,6 +26,15 @@ function createTable($db) {
 
 }
 
+function getCategoriesTable($db) {
+	// カテゴリーテーブルからデータを取得
+	// categoriesテーブルからidとnameカラムを選択するSQLクエリを実行します。
+	$stmt = $db->query('SELECT id, name FROM categories');
+	//取得したデータを連想配列としてすべてフェッチ（取得）します。この連想配列が$categoriesに格納されます。
+	$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	return $categories;
+}
+
 //テーブル内の自動増分（AUTO_INCREMENT）値をリセット ※いらないかも
 function resetAutoIncrement($db) {
 	// items テーブルの主キー列である id の自動増分値を1にリセットするためのSQLステートメント
@@ -88,6 +97,16 @@ function updateItem($db, $data) {
             ':item_id' => $data['id']
         ]);
 
+        // item_categories テーブルを更新
+        $sql_category = "UPDATE item_categories SET
+            category_id = :category_id
+        WHERE item_id = :item_id";
+        $statement = $db->prepare($sql_category);
+        $statement->execute([
+            ':category_id' => $data['category_id'],
+            ':item_id' => $data['id']
+        ]);
+
         // トランザクションをコミット: すべての操作が成功した場合、$db->commit()でトランザクションをコミットし、変更をデータベースに適用
         $db->commit();
         echo "データが正常に更新されました。";
@@ -100,18 +119,24 @@ function updateItem($db, $data) {
 
 //指定されたIDを持つアイテム（商品）の情報をデータベースから取得.その情報を連想配列として返す
 function getItemById($db, $id) {
-	$sql = "SELECT 
+    $sql = "SELECT 
         items.id AS item_id,
-        items.name,
+        items.name AS item_name,
         items.furigana,
         items.item_description,
         items.price,
         items.image_path,
         quantities.id AS quantity_id,
-        quantities.quantity
+        quantities.quantity,
+        categories.id AS category_id,
+        categories.name AS category_name
     FROM items
     INNER JOIN 
-		quantities ON items.id = quantities.item_id
+        quantities ON items.id = quantities.item_id
+    INNER JOIN 
+        item_categories ON items.id = item_categories.item_id
+    INNER JOIN 
+        categories ON item_categories.category_id = categories.id
     WHERE items.id = :id";
 
 	$statement = $db->prepare($sql);
@@ -158,6 +183,8 @@ if (!isset($_SESSION['id'])) {
 $db = connectDatabase();
 createTable($db);
 resetAutoIncrement($db);
+$categories = getCategoriesTable($db);
+
 
 //削除ボタンが押されたとき
 if (isset($_POST['delete']) && $_POST['delete'] === 'true') {
@@ -186,7 +213,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
         'item_description' => $_POST['item_description'],
         'quantity' => $_POST['quantity'],
         'price' => $_POST['price'],
-        'image_path' => $edit_image_path
+        'image_path' => $edit_image_path,
+        'category_id' => $_POST['category_id']
     ];
 
     updateItem($db, $data);
@@ -200,7 +228,6 @@ $item = null;
 if (isset($_GET['id'])) {
     $item = getItemById($db, $_GET['id']);
 }
-
 // ============================
 // View
 // ============================
@@ -238,7 +265,7 @@ if (isset($_GET['id'])) {
     <div class="add-data__wrapper-name-img">
         <div class="add-data__wrapper-name">
             <div class="form__wrapper-input">
-                <input type="text" name="name" required class="add-data__input" value="<?php echo htmlspecialchars($item['name']); ?>">
+                <input type="text" name="name" required class="add-data__input" value="<?php echo htmlspecialchars($item['item_name']); ?>">
             </div>
             <div class="form__wrapper-input">
                 <input type="text" name="furigana" required class="add-data__input" value="<?php echo htmlspecialchars($item['furigana']); ?>">
@@ -271,13 +298,15 @@ if (isset($_GET['id'])) {
     <p>カテゴリー</p>
     <div class="wrapper-contents--flex">
         <img src="image/folder_icon.svg" alt="folder_icon" width="24" height="24" fill="rgb(0, 0, 0)">
-        <div class="select-box">
-            <select>
-                <option value="1">フルーツ</option>
-                <option value="2">野菜</option>
-                <option value="3">その他</option>
+        <div class="addData__wrapper-select-box">
+			<select name="category_id" class="addData__select-box">
+				<?php foreach ($categories as $category): ?>
+                    <option value="<?php echo htmlspecialchars($category['id'], ENT_QUOTES, 'UTF-8'); ?>"<?php if ($category['id'] == $item['category_id']) echo ' selected'; ?>>
+                        <?php echo htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8'); ?>
+                    </option>
+				<?php endforeach; ?>
             </select>
-        </div>
+		</div>
     </div>
     <div class="body__wrapper-delete-button">
         <button type="button" id="deleteButton">削除</button>
