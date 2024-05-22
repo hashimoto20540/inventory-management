@@ -142,81 +142,73 @@ initializeId($db);
 				</div>
 			</form>
 			<table border="1" id="table_items">
-				<tr class="product-table__th">
-					<th>ID</th>
-					<th class="productList__table--th-image"></th>
-					<th>商品名</th>
-					<th>フリガナ</th>
-					<th>カテゴリー</th>
-					<th>在庫数</th>
-					<th>価格</th>
-					<th></th>
-				</tr>
-				<?php
-				// 結合して全行を出力するSQL文
-				$sql = "SELECT 
-						items.id AS item_id,
-						items.name AS item_name,
-						items.furigana,
-						items.item_description,
-						items.price,
-						items.image_path,
-						quantities.id AS quantity_id,
-						quantities.quantity,
-						categories.name AS category_name
-				FROM 
-						items
-				INNER JOIN 
-						quantities ON items.id = quantities.item_id
-				INNER JOIN 
-						item_categories ON items.id = item_categories.item_id
-				INNER JOIN 
-						categories ON item_categories.category_id = categories.id";
-
-				$statement = $db->prepare($sql);
-				$statement->execute();
-
-				while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-				?>
-				<tr data-id="<?php echo htmlspecialchars($row['item_id']); ?>"
-					data-name="<?php echo htmlspecialchars($row['item_name']); ?>"
-					data-quantity="<?php echo htmlspecialchars($row['quantity']); ?>"
-					data-furigana="<?php echo htmlspecialchars($row['furigana']); ?>"
-					data-description="<?php echo htmlspecialchars($row['item_description']); ?>"
-					data-price="<?php echo htmlspecialchars($row['price']); ?>"
-					data-image="<?php echo htmlspecialchars($row['image_path']); ?>"
-					title="<?php echo htmlspecialchars($row['item_name']); ?>の商品編集ページに移動します"
-					enctype="multipart/form-data"
-					class="table-items__tr--list">
-						<td><?php echo htmlspecialchars($row['item_id']); ?></td>
-						<td>
-							<div class="productList__table--wapper-image">
-								<?php if (!empty($row['image_path'])) : ?>
-									<img class="productList__table--image" src="<?php echo htmlspecialchars($row['image_path']); ?>" />
-								<?php else : ?>
-									<img class="productList__table--image" src="https://placehold.jp/300x200.png" />
-								<?php endif; ?>
-							</div>
-						</td>
-						<td><?php echo htmlspecialchars($row['item_name']); ?></td>
-						<td><?php echo htmlspecialchars($row['furigana']); ?></td>
-						<td><?php echo htmlspecialchars($row['category_name']); ?></td>
-						<td><?php echo htmlspecialchars($row['quantity']); ?></td>
-						<td><?php echo htmlspecialchars($row['price']); ?></td>
+				<tbody class="table-items__tbody--search-result">
+					<tr class="product-table__th">
+						<th>ID</th>
+						<th class="productList__table--th-image"></th>
+						<th>商品名</th>
+						<th>フリガナ</th>
+						<th>カテゴリー</th>
+						<th>在庫数</th>
+						<th>価格</th>
+						<th></th>
 					</tr>
+					<?php
+					// 結合して全行を出力するSQL文
+					$sql = "SELECT 
+							items.id AS item_id,
+							items.name AS item_name,
+							items.furigana,
+							items.item_description,
+							items.price,
+							items.image_path,
+							quantities.id AS quantity_id,
+							quantities.quantity,
+							categories.name AS category_name
+					FROM 
+							items
+					INNER JOIN 
+							quantities ON items.id = quantities.item_id
+					INNER JOIN 
+							item_categories ON items.id = item_categories.item_id
+					INNER JOIN 
+							categories ON item_categories.category_id = categories.id";
+
+					$statement = $db->prepare($sql);
+					$statement->execute();
+
+					while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+					?>
+					<tr data-id="<?php echo htmlspecialchars($row['item_id']); ?>"
+						data-name="<?php echo htmlspecialchars($row['item_name']); ?>"
+						data-quantity="<?php echo htmlspecialchars($row['quantity']); ?>"
+						data-furigana="<?php echo htmlspecialchars($row['furigana']); ?>"
+						data-description="<?php echo htmlspecialchars($row['item_description']); ?>"
+						data-price="<?php echo htmlspecialchars($row['price']); ?>"
+						data-image="<?php echo htmlspecialchars($row['image_path']); ?>"
+						title="<?php echo htmlspecialchars($row['item_name']); ?>の商品編集ページに移動します"
+						enctype="multipart/form-data"
+						class="table-items__tr--list">
+							<td><?php echo htmlspecialchars($row['item_id']); ?></td>
+							<td>
+								<div class="productList__table--wapper-image">
+									<?php if (!empty($row['image_path'])) : ?>
+										<img class="productList__table--image" src="<?php echo htmlspecialchars($row['image_path']); ?>" />
+									<?php else : ?>
+										<img class="productList__table--image" src="https://placehold.jp/300x200.png" />
+									<?php endif; ?>
+								</div>
+							</td>
+							<td><?php echo htmlspecialchars($row['item_name']); ?></td>
+							<td><?php echo htmlspecialchars($row['furigana']); ?></td>
+							<td><?php echo htmlspecialchars($row['category_name']); ?></td>
+							<td><?php echo htmlspecialchars($row['quantity']); ?></td>
+							<td><?php echo htmlspecialchars($row['price']); ?></td>
+						</tr>
 				<?php
 				}
 				?>
-				<tr data-id="<?php echo htmlspecialchars($row['item_id']); ?>"
-					data-name="<?php echo htmlspecialchars($row['item_name']); ?>"
-					data-quantity="<?php echo htmlspecialchars($row['quantity']); ?>"
-					data-furigana="<?php echo htmlspecialchars($row['furigana']); ?>"
-					data-description="<?php echo htmlspecialchars($row['item_description']); ?>"
-					data-price="<?php echo htmlspecialchars($row['price']); ?>"
-					data-image="<?php echo htmlspecialchars($row['image_path']); ?>"
-					title="<?php echo htmlspecialchars($row['item_name']); ?>の商品編集ページに移動します"
-					enctype="multipart/form-data"
-					class="table-items__tr--search-result"></tr>
+				</tbody>
 			</table>
 		</main>
 	</div>

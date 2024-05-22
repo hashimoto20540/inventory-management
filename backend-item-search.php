@@ -15,7 +15,6 @@ mysqli_set_charset($link, "utf8mb4");
 if(isset($_REQUEST["term"])){
     // Prepare a select statement
     //LIKE ?を使用して、プレースホルダー?に対するパラメータバインディングを行うSQL文を準備します。COLLATE utf8mb4_general_ciで照合順序を行う。
-
     $sql = "SELECT 
         items.id AS item_id,
         items.name AS item_name,
@@ -59,28 +58,57 @@ if(isset($_REQUEST["term"])){
             if(mysqli_num_rows($result) > 0){
 
                 // Fetch result rows as an associative array
-                // mysqli_fetch_array関数で結果セットから各行を連想配列として取得し、国名を表示します。MYSQLI_ASSOCは、mysqli_fetch_array関数の引数として使用されます。この関数は、データベースクエリの結果セットから1行分のデータを取得し、指定された形式で返します。MYSQLI_ASSOCを使用すると、結果が連想配列として返され、カラム名がキーとして使われます。
+                // mysqli_fetch_array関数で結果セットから各行を連想配列として取得します。
+                // MYSQLI_ASSOCは、mysqli_fetch_array関数の引数として使用されます。
+                // この関数は、データベースクエリの結果セットから1行分のデータを取得し、指定された形式で返します。
+                // MYSQLI_ASSOCを使用すると、結果が連想配列として返され、カラム名がキーとして使われます。
                 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                    echo "<td>" . $row["item_id"] . "</td>";
-                    // ヒアドキュメントを使用して複数行のHTMLを出力. <<<HTMLで開始、HTML;で終了
+
+                    // PHPでデータを取得
+                    $item_id = htmlspecialchars($row['item_id']);
+                    $item_name = htmlspecialchars($row['item_name']);
+                    $quantity = htmlspecialchars($row['quantity']);
+                    $furigana = htmlspecialchars($row['furigana']);
+                    $item_description = htmlspecialchars($row['item_description']);
+                    $price = htmlspecialchars($row['price']);
+                    $image_path = htmlspecialchars($row['image_path']);
+                    $title = htmlspecialchars($row['item_name']) . " の商品編集ページに移動します";
+
+                    // ヒアドキュメントでHTMLを出力
                     echo <<<HTML
-                    <td>
-                        <div class="productList__table--wapper-image">
-                HTML;
+                    <tr class="table-items__tr--search-result"
+                        data-id="$item_id"
+                        data-name="$item_name"
+                        data-quantity="$quantity"
+                        data-furigana="$furigana"
+                        data-description="$item_description"
+                        data-price="$price"
+                        data-image="$image_path"
+                        title="こちらの商品編集ページに移動します">
+                    HTML;
+                    
+                    echo "<td>" . $row["item_id"] . "</td>";
+                    
+                    echo <<<HTML
+                        <td>
+                            <div class="productList__table--wapper-image">
+                    HTML;
+                    
                     if (!empty($row['image_path'])) {
                         echo "<img class='productList__table--image' src='" . htmlspecialchars($row['image_path']) . "' />";
                     } else {
                         echo "<img class='productList__table--image' src='https://placehold.jp/300x200.png' />";
                     }
                     echo <<<HTML
-                        </div>
-                    </td>
-                HTML;
+                            </div>
+                        </td>
+                    HTML;
                     echo "<td>" . $row["item_name"] . "</td>";
                     echo "<td>" . $row["furigana"] . "</td>";
                     echo "<td>" . $row["category_name"] . "</td>";
                     echo "<td>" . $row["quantity"] . "</td>";
                     echo "<td>" . $row["price"] . "</td>";
+                    echo "</tr>";
                 }
             } else{
                 echo "<p>当てはまる商品が見つかりません。</p>";
