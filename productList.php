@@ -129,8 +129,14 @@ initializeId($db);
 		<main class="content">
 			<form action="" method="GET">
 				<div class="information-bar product-list__information-bar">
-					<input class="content__information-box product-list__information-box" placeholder="名前、説明、SKU、GTINのいずれかで検索">
-					</input>	
+					<div class="search-box content__information-box">
+						<input class="product-list__information-box" type="text" autocomplete="off" placeholder="名前で検索">
+					</div>
+
+
+
+
+
 					<div class="flex-grow"></div>
 					<a href="addData.php" class="content__information-box product-list__register-button"><div>商品を登録</div></a>
 				</div>
@@ -179,8 +185,9 @@ initializeId($db);
 					data-description="<?php echo htmlspecialchars($row['item_description']); ?>"
 					data-price="<?php echo htmlspecialchars($row['price']); ?>"
 					data-image="<?php echo htmlspecialchars($row['image_path']); ?>"
-					title="<?php echo htmlspecialchars($row['name']); ?>の商品編集ページに移動します"
-					enctype="multipart/form-data">
+					title="<?php echo htmlspecialchars($row['item_name']); ?>の商品編集ページに移動します"
+					enctype="multipart/form-data"
+					class="table-items__tr--list">
 						<td><?php echo htmlspecialchars($row['item_id']); ?></td>
 						<td>
 							<div class="productList__table--wapper-image">
@@ -200,12 +207,18 @@ initializeId($db);
 				<?php
 				}
 				?>
+				<tr data-id="<?php echo htmlspecialchars($row['item_id']); ?>"
+					data-name="<?php echo htmlspecialchars($row['item_name']); ?>"
+					data-quantity="<?php echo htmlspecialchars($row['quantity']); ?>"
+					data-furigana="<?php echo htmlspecialchars($row['furigana']); ?>"
+					data-description="<?php echo htmlspecialchars($row['item_description']); ?>"
+					data-price="<?php echo htmlspecialchars($row['price']); ?>"
+					data-image="<?php echo htmlspecialchars($row['image_path']); ?>"
+					title="<?php echo htmlspecialchars($row['item_name']); ?>の商品編集ページに移動します"
+					enctype="multipart/form-data"
+					class="table-items__tr--search-result"></tr>
 			</table>
 		</main>
-	</div>
-	<div class="search-box">
-		<input type="text" autocomplete="off" placeholder="Search country..." />
-		<div class="result"></div>
 	</div>
 </body>
 </html>
