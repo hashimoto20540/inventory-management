@@ -33,12 +33,7 @@ XAMPPのhtdocsディレクトリー（C:\xampp\htdocs）にinventory-management�
 OS：Wndows11
 
 ## 作成方法<br>
-以下のサイトを参考に作成<br>
-商品在庫管理<br>
-https://jp-seemore.com/web/7537/#toc3<br>
-ログイン機能<br>
-https://qiita.com/ryo-futebol/items/5fb635199acc2fcbd3f
-
+サイトを参考に作成<br>
 
 ## ページのURL<br>
 新規会員登録<br>
@@ -58,10 +53,10 @@ https://docs.google.com/spreadsheets/d/124QxFUf24I2REP_Xs3qHbswRSgVkc-ljpKWcY_aP
 https://www.figma.com/file/chXWXnK4O5lSjceNumvKG9/ER%E5%9B%B3?type=design&node-id=3%3A147&mode=design&t=kPsWDoFcxsuwvhHL-1
 
 
-## 参考文献<br>
+## 参考サイト<br>
 ・商品在庫管理：PHPで学ぶ！在庫管理システムの10ステップ作成ガイド<br>
 https://jp-seemore.com/web/7537/#toc3<br>
-・ログイン機能 →見れなくなってる(;´Д｀)。やはりQiitaでいいね数が少ないものはダメ。<br>
+・ログイン機能 →見れなくなってる(;´Д｀)<br>
 https://qiita.com/ryo-futebol/items/5fb635199acc2fcbd3f<br>
 ・若手プログラマー必読！５分で理解できるER図の書き方５ステップ<br>
 https://www.ntt.com/business/sdpf/knowledge/archive_50.html<br>
