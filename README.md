@@ -4,15 +4,17 @@
 XAMPPのhtdocsディレクトリー（C:\xampp\htdocs）にinventory-managementフォルダを配置すると動作します。<br>
 
 ### 商品の在庫管理<br>
-・商品の一覧を確認<br>
-・商品を登録<br>
-・商品を編集<br>
+- 商品を登録<br>
+- 商品の一覧<br>
+- 商品を編集<br>
+- 商品削除<br>
+- 検索機能<br>
 
 ### ログイン機能<br>
-・ユーザー登録画面<br>
-・ログイン画面<br>
-・ホーム画面<br>
-・未ログインだとログイン画面にリダイレクト
+- ユーザー登録画面<br>
+- ログイン画面<br>
+- ホーム画面<br>
+- 未ログインだとログイン画面にリダイレクト
 
 ## 使用技術<br>
 ### 使用アプリ・言語
@@ -70,3 +72,7 @@ https://squareup.com/dashboard/<br>
 https://kazuki13070311.hatenadiary.jp/entry/2021/07/17/002811<br>
 ・仕様書とは？開発事例をもとに成功する仕様書の書き方を解説<br>
 https://monstar-lab.com/dx/solution/howto-specification/<br>
+PHP MySQL Ajax Live Search(検索機能作成時に使用)<br>
+https://www.tutorialrepublic.com/php-tutorial/php-mysql-ajax-live-search.php<br>
+ヒアドキュメント <br>
+https://www.php.net/manual/ja/language.types.string.php<br>
