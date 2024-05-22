@@ -98,6 +98,7 @@ initializeId($db);
     <title>商品一覧</title>
     <link rel="stylesheet" type="text/css" href="css/index.css">
 		<link rel="stylesheet" type="text/css" href="css/productList.css">
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   	<script src="javascript/productList.js" defer></script>
 </head>
 <body>
@@ -202,7 +203,10 @@ initializeId($db);
 			</table>
 		</main>
 	</div>
-
+	<div class="search-box">
+		<input type="text" autocomplete="off" placeholder="Search country..." />
+		<div class="result"></div>
+	</div>
 </body>
 </html>
 
