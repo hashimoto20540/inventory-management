@@ -129,8 +129,8 @@ initializeId($db);
 		<main class="content">
 			<form action="" method="GET">
 				<div class="information-bar product-list__information-bar">
-					<div class="search-box content__information-box">
-						<input class="product-list__information-box" type="text" autocomplete="off" placeholder="名前で検索">
+					<div class="search-box information-box__wrapper-search">
+						<input class="information-box__search" type="text" autocomplete="off" placeholder="名前で検索">
 					</div>
 
 					<div class="flex-grow"></div>
@@ -212,8 +212,3 @@ initializeId($db);
 	</div>
 </body>
 </html>
-
-
-
-
-

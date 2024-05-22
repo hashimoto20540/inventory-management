@@ -6,8 +6,26 @@
   display: flex;
 }
 
+.information-box__search {
+  width: 100%;
+  padding: 1em 2em;
+  border-radius: 5px;
+  border: solid rgb(0, 95, 229) 2px;
+  font-size: 1rem;
+}
+
+.information-box__search:focus {
+  outline: none;
+  border: solid rgb(0, 95, 229) 3px;
+}
+
 .product-list__search {
   border: none;
+}
+
+.information-box__wrapper-search {
+  width: fit-content;
+  padding: 0em;
 }
 
 .product-list__register-button {
