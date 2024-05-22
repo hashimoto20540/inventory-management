@@ -4,9 +4,9 @@
 XAMPPのhtdocsディレクトリー（C:\xampp\htdocs）にinventory-managementフォルダを配置すると動作します。<br>
 
 ### 商品の在庫管理<br>
--CRUD処理<br>
-  - 商品登録<br>
-  - 商品一覧<br>
+- CRUD処理<br>
+-- 商品登録<br>
+-- 商品一覧<br>
   - 商品編集<br>
   - 商品削除<br>
   - 商品検索機能<br>
