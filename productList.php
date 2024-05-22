@@ -142,7 +142,7 @@ initializeId($db);
 				</div>
 			</form>
 			<table border="1" id="table_items">
-				<tbody class="table-items__tbody--search-result">
+				<thead>
 					<tr class="product-table__th">
 						<th>ID</th>
 						<th class="productList__table--th-image"></th>
@@ -153,6 +153,8 @@ initializeId($db);
 						<th>価格</th>
 						<th></th>
 					</tr>
+				</thead>
+				<tbody class="table-items__tbody--search-result">
 					<?php
 					// 結合して全行を出力するSQL文
 					$sql = "SELECT 

@@ -36,8 +36,8 @@ $(document).ready(function(){
           //.done: jQueryのメソッドで、リクエストが成功したときに実行されるコールバック関数を指定します。サーバーからのレスポンスを処理するために使用されます。
           //function(data): コールバック関数です。サーバーから返されたデータは、この関数の引数dataに渡されます。
             $.get("backend-item-search.php", {term: inputVal}).done(function(data){
-                // dataには、
-                console.log(data);
+                // dataには、羅列されたHTMLが入っている
+                // console.log(data);
                 // resultDropdown.html(data); は、jQueryのメソッドを使ってHTML要素の内容を動的に更新する部分です。
                 // resultDropdownは変数。jQueryの .html() メソッドは、指定した要素のHTML内容を取得または設定するために使われます。引数を与えると、その内容で要素の内部HTMLを置き換えます。
                 resultDropdown.html(data);
@@ -61,13 +61,13 @@ $(document).ready(function(){
 });
 
 //検索ボックスに入力があるかどうかを検知し、入力がある場合は商品一覧を非表示にし、入力がない場合は表示する
-// $(document).ready(function(){
-//   $('.search-box input[type="text"]').on("keyup", function() {
-//       var searchText = $(this).val().trim();
-//       if(searchText !== '') {
-//           $('.table-items__tr--list').hide(); // 入力がある場合は商品一覧を非表示にする
-//       } else {
-//           $('.table-items__tr--list').show(); // 入力がない場合は商品一覧を表示する
-//       }
-//   });
-// });
+$(document).ready(function(){
+  $('.search-box input[type="text"]').on("keyup", function() {
+      var searchText = $(this).val().trim();
+      if(searchText !== '') {
+          $('.table-items__tbody--search-result .table-items__tr--list').hide(); // 入力がある場合は商品一覧を非表示にする
+      } else {
+          $('.table-items__tbody--search-result .table-items__tr--list').show(); // 入力がない場合は商品一覧を表示する
+      }
+  });
+});
