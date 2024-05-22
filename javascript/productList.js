@@ -43,10 +43,14 @@ $(document).ready(function(){
                 resultDropdown.html(data);
             });
         } else{
-            // 子要素を削除
-            // resultDropdown.empty();
-            var trSearchResult = $(".table-items__tr--search-result");
-            trSearchResult.remove();
+          // 検索ボックスが空の場合、すべての商品を再表示する
+          //$.get は jQuery の関数で、HTTP GET リクエストを送信します。
+          //第一引数 "backend-item-search.php" はリクエストを送信する URL を指定
+          //第二引数 { term: "" } は送信するデータをオブジェクト形式で指定しています。この場合、term というキーに空の文字列 "" を渡しています。これにより、サーバー側では検索文字列が空であることがわかります。
+          $.get("backend-item-search.php", { term: "" }).done(function(data) {
+            resultDropdown.html(data);
+          });
+
         }
     });
     

@@ -39,6 +39,7 @@ if(isset($_REQUEST["term"])){
 
     //mysqli_prepare関数でSQL文を準備します。
     if($stmt = mysqli_prepare($link, $sql)){
+        
         // Bind variables to the prepared statement as parameters
         //mysqli_stmt_bind_param関数で、SQL文のプレースホルダーに実際の値（ここでは、ユーザーが入力した検索文字列）をバインドします。"s"はパラメータの型（文字列）を示します。
         mysqli_stmt_bind_param($stmt, "s", $param_term);

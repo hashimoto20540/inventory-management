@@ -133,10 +133,6 @@ initializeId($db);
 						<input class="product-list__information-box" type="text" autocomplete="off" placeholder="名前で検索">
 					</div>
 
-
-
-
-
 					<div class="flex-grow"></div>
 					<a href="addData.php" class="content__information-box product-list__register-button"><div>商品を登録</div></a>
 				</div>
