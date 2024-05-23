@@ -7,11 +7,20 @@
 }
 
 .information-box__search {
-  width: 100%;
-  padding: 1em 2em;
+  width: calc(100% - (2em + 40px));
+  padding: 1em 2em 1em 40px;
   border-radius: 5px;
   border: solid rgb(0, 95, 229) 2px;
   font-size: 1rem;
+  background: url('../image/search_icon.svg') no-repeat;
+  background-size: 25px 25px; /* 画像のサイズを調整 */
+  background-position: 10px center; /* 画像の位置を調整 */
+
+}
+
+/* プレースホルダーのスタイルを設定 */
+.information-box__search::placeholder {
+  color: #aaa; /* プレースホルダーの文字色を設定 */
 }
 
 .information-box__search:focus {
@@ -92,4 +101,25 @@ table .product-table__th:hover {
   width: 40px;
   border-radius: 5px;
   object-fit: cover;
+}
+
+.hide {
+  display: none;
+}
+
+.table-items__wrapper{
+  position: relative;
+}
+
+.table-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(214, 214, 214, 0.8);
+  background-image: url(../image/loading-gif.gif);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50px 50px;
 }

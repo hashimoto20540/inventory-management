@@ -35,12 +35,26 @@ $(document).ready(function(){
           //{term: inputVal}: サーバーに送信するデータを指定します。このオブジェクトはキーと値のペアで構成されており、キーはterm、値はinputValです。inputValは検索ボックスに入力されたテキストです。
           //.done: jQueryのメソッドで、リクエストが成功したときに実行されるコールバック関数を指定します。サーバーからのレスポンスを処理するために使用されます。
           //function(data): コールバック関数です。サーバーから返されたデータは、この関数の引数dataに渡されます。
-            $.get("backend-item-search.php", {term: inputVal}).done(function(data){
+            $.get({
+                url:"backend-item-search.php",
+                data: {term: inputVal},
+                beforeSend: function() {
+                  // ローディングスピナーを表示
+                  // $('.table-times__search-loading').removeClass('hide');
+                  $('.table-loading-overlay').removeClass('hide');
+                }
+            }).done(function(data){
                 // dataには、羅列されたHTMLが入っている
                 // console.log(data);
                 // resultDropdown.html(data); は、jQueryのメソッドを使ってHTML要素の内容を動的に更新する部分です。
                 // resultDropdownは変数。jQueryの .html() メソッドは、指定した要素のHTML内容を取得または設定するために使われます。引数を与えると、その内容で要素の内部HTMLを置き換えます。
                 resultDropdown.html(data);
+            }).always(function() {
+                // リクエストが完了したらローディングスピナーを非表示
+                // 1秒後にローディングスピナーを非表示
+                setTimeout(function() {
+                    $('.table-loading-overlay').addClass('hide');
+                }, 1000); // 1000ミリ秒（1秒）後に実行
             });
         } else{
           // 検索ボックスが空の場合、すべての商品を再表示する
@@ -75,3 +89,4 @@ $(document).ready(function(){
       }
   });
 });
+
