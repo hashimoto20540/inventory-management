@@ -54,23 +54,23 @@ https://www.figma.com/file/chXWXnK4O5lSjceNumvKG9/ER%E5%9B%B3?type=design&node-i
 
 
 ## 参考サイト<br>
-・商品在庫管理：PHPで学ぶ！在庫管理システムの10ステップ作成ガイド<br>
+- 商品在庫管理：PHPで学ぶ！在庫管理システムの10ステップ作成ガイド<br>
 https://jp-seemore.com/web/7537/#toc3<br>
-・ログイン機能 →見れなくなってる(;´Д｀)<br>
+- ログイン機能 →見れなくなってる(;´Д｀)<br>
 https://qiita.com/ryo-futebol/items/5fb635199acc2fcbd3f<br>
-・若手プログラマー必読！５分で理解できるER図の書き方５ステップ<br>
+- 若手プログラマー必読！５分で理解できるER図の書き方５ステップ<br>
 https://www.ntt.com/business/sdpf/knowledge/archive_50.html<br>
-・やさしい図解で学ぶ　中間テーブル　多対多　概念編<br>
+- やさしい図解で学ぶ　中間テーブル　多対多　概念編<br>
 https://qiita.com/ramuneru/items/db43589551dd0c00fef9<br>
-・参考にしたデザイン：square様<br>
+- 参考にしたデザイン：square様<br>
 https://squareup.com/dashboard/<br>
-・【書籍】達人に学ぶDB設計徹底指南書を読んで学んだこと【第4章】：多対多のER図作成時に参考<br>
+- 【書籍】達人に学ぶDB設計徹底指南書を読んで学んだこと【第4章】：多対多のER図作成時に参考<br>
 https://kazuki13070311.hatenadiary.jp/entry/2021/07/17/002811<br>
-・仕様書とは？開発事例をもとに成功する仕様書の書き方を解説<br>
+- 仕様書とは？開発事例をもとに成功する仕様書の書き方を解説<br>
 https://monstar-lab.com/dx/solution/howto-specification/<br>
-PHP MySQL Ajax Live Search(検索機能作成時に使用)<br>
+- PHP MySQL Ajax Live Search(検索機能作成時に使用)<br>
 https://www.tutorialrepublic.com/php-tutorial/php-mysql-ajax-live-search.php<br>
-ヒアドキュメント <br>
+- ヒアドキュメント <br>
 https://www.php.net/manual/ja/language.types.string.php<br>
-Ajax（jQuery）での通信中にローディング画像を表示する<br>
+- Ajax（jQuery）での通信中にローディング画像を表示する<br>
 https://qiita.com/dkmrkm/items/4aa1a457dd26806e9008<br>
