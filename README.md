@@ -72,3 +72,5 @@ PHP MySQL Ajax Live Search(検索機能作成時に使用)<br>
 https://www.tutorialrepublic.com/php-tutorial/php-mysql-ajax-live-search.php<br>
 ヒアドキュメント <br>
 https://www.php.net/manual/ja/language.types.string.php<br>
+Ajax（jQuery）での通信中にローディング画像を表示する<br>
+https://qiita.com/dkmrkm/items/4aa1a457dd26806e9008<br>
