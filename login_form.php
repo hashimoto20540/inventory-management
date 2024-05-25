@@ -67,12 +67,14 @@ data-type="standard"は標準のGoogleログインボタンを表示するため
 					},
 					body: JSON.stringify({ email: email, name: name })
 				})
-				.then(response => response.json())
-				.then(data => {
-					console.log('Success:', data);
-					if (data.status === 'success' && data.redirect) {
-						window.location.href = data.redirect; // サーバーからのレスポンスに基づいてリダイレクト
+				.then(response => {
+					// レスポンスが成功したか確認
+					if (!response.ok) {
+						throw new Error('Network response was not ok ' + response.statusText);
 					}
+					response.json();
+					window.location.href = "google_login.php"
+					return response.json(); // レスポンスをJSON形式に変換
 				})
 				.catch((error) => {
 					console.error('Error:', error);
