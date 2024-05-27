@@ -16,73 +16,62 @@
 <body>
 <form action="login.php" method="post">
 <div class="layout-base__body">
-	<h1>ログイン</h1>
-	<p>アカウントをお持ちでない方 <a href="signup.php" class="internal-link"><span >アカウントを作成</span></a></p>
-	<div class="form__wrapper-input">
-		<input type="text" name="mail" required class="form__input-text" placeholder="メールアドレス">
-	</div>
-	<div class="form__wrapper-input">
-		<input type="password" name="pass" required class="form__input-text" placeholder="パスワード">
-	</div>
-	<input type="submit" value="ログイン" class="form__botton">
+  <h1>ログイン</h1>
+  <p>アカウントをお持ちでない方 <a href="signup.php" class="internal-link"><span>アカウントを作成</span></a></p>
+  <div class="form__wrapper-input">
+    <input type="text" name="mail" required class="form__input-text" placeholder="メールアドレス">
+  </div>
+  <div class="form__wrapper-input">
+    <input type="password" name="pass" required class="form__input-text" placeholder="パスワード">
+  </div>
+  <input type="submit" value="ログイン" class="form__botton">
 
+  <p>Googleアカウントをお持ちの方</p>
+  <!-- ページがロードされたときにGoogleの認証サービスを初期化します。data-client_idにはGoogle Cloud Consoleで取得したクライアントIDを設定します。 -->
+  <div id="g_id_onload"
+       data-client_id="67399827703-oqqaicvrrvg0je78cu8hh43fn6rd7rhd.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse">
+  </div>
+  <!-- Googleでログインボタンを表示します。 -->
+  <div class="g_id_signin" data-type="standard"></div>
 
+  <script>
+    // ユーザーがログインした後、Googleが提供するJWT（JSON Web Token）を処理するコールバック関数です。
+    function handleCredentialResponse(response) {
+      console.log("Encoded JWT ID token: " + response.credential);
+      const token = response.credential;
+      // jwt_decodeを使ってデコードします。JSON形式に変換
+      const decodedToken = jwt_decode(token);
+      console.log("Decoded JWT: ", decodedToken);
 
+			const sub = decodedToken.sub;
+			// console.log("Subject (sub):", sub);
+      const email = decodedToken.email;
+      const name = decodedToken.name;
 
-	<p>Googleアカウントをお持ちの方</p>
-	<!-- ページがロードされたときにGoogleの認証サービスを初期化します。data-client_idにはGoogle Cloud Consoleで取得したクライアントIDを設定します。
-data-callbackには、ユーザーが認証した後に呼び出されるJavaScript関数名を指定します。data-callbackには、ユーザーが認証した後に呼び出されるJavaScript関数名を指定します。 -->
-	<div id="g_id_onload"
-				data-client_id="67399827703-oqqaicvrrvg0je78cu8hh43fn6rd7rhd.apps.googleusercontent.com"
-				data-callback="handleCredentialResponse">
-	</div>
-	<!-- oogleでログインボタンを表示します。
-data-type="standard"は標準のGoogleログインボタンを表示するための設定です。他にもiconやbuttonなどのタイプがあります。 -->
-	<div class="g_id_signin" data-type="standard"></div>
-
-	<script>
-			// ユーザーがログインした後、Googleが提供するJWT（JSON Web Token）を処理するコールバック関数です。
-			// ここでresponse.credentialにエンコードされたJWT IDトークンが含まれています。このトークンをバックエンドに送信してユーザーの認証を行います。
-			function handleCredentialResponse(response) {
-						console.log("Encoded JWT ID token: " + response.credential);
-					// ここにトークンをバックエンドに送信して検証するコードを追加できます。
-						const token = response.credential;
-            const decodedToken = jwt_decode(token);
-            console.log("Decoded JWT: ", decodedToken);
-
-            const email = decodedToken.email;
-            const name = decodedToken.name;
-
-            console.log("Email: ", email);
-            console.log("Name: ", name);
-
-						// EmailとNameをサーバーに送信する
-						sendLoginData(email, name);
-			}
-			function sendLoginData(email, name) {
-				fetch('google_login.php', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({ email: email, name: name })
-				})
-				.then(response => {
-					// レスポンスが成功したか確認
-					if (!response.ok) {
-						throw new Error('Network response was not ok ' + response.statusText);
-					}
-					response.json();
-					window.location.href = "google_login.php"
-					return response.json(); // レスポンスをJSON形式に変換
-				})
-				.catch((error) => {
-					console.error('Error:', error);
-				});
-			}
-	</script>
+      // EmailとNameをサーバーに送信する
+      sendLoginData(sub, email, name);
+    }
+    function sendLoginData(sub, email, name) {
+      var xhr = new XMLHttpRequest();
+      // POSTメソッドでgoogle_login.phpにリクエストを送信
+      xhr.open('POST', 'google_login.php', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          console.log('Login successful: ' + xhr.responseText);
+          // ログイン成功後にgoogle_login_display.phpにリダイレクト
+          window.location.href = 'google_login.php';
+        } else {
+          console.error('Login failed: ' + xhr.responseText);
+        }
+      };
+      // emailとnameをJSON形式にエンコードしてリクエストボディに含める
+      var data = JSON.stringify({ sub: sub, email: email, name: name });
+      xhr.send(data);
+    }
+  </script>
 </div>
-
 </form>
 </body>
 </html>
