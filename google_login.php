@@ -3,13 +3,23 @@
 session_start();
 
 // POSTデータの処理
+// $_SERVERは、PHPで事前に定義されているスーパーグローバル変数の一つです。この変数は、サーバーや実行環境に関する情報を格納する連想配列です。
+// クライアントから送られてきたリクエストに関する情報も含まれています。
+// $_SERVERの連想配列のキーである 'REQUEST_METHOD' は、現在のリクエストのHTTPメソッドを表しています。
+// これは、クライアント（通常はブラウザ）がサーバーに送信したリクエストが、どのメソッドを使用しているかを示します。
+// POST: データを送信するために使用されます。
+// ===は、値と型の両方を比較する厳密な比較演算子
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // POSTデータを受け取る. リクエストのボディ全体を取得します。これは、JSON形式のデータを含むリクエストボディを読み取るために使用します。
+    // HPの関数 file_get_contents:これは、指定したファイルの内容をすべて読み取る関数です。通常はファイルのパスを指定しますが、特殊なストリームも扱えます。
+    // php://input:これは、HTTPリクエストの生のデータを読み取るための特殊な入力ストリームです。特に、POSTリクエストやPUTリクエストのボディのデータを取得するのに使います。
+    // $_POSTや$_FILESとは異なり、php://inputは解析されていない生のデータを提供します。例えば、JSON形式のデータを受け取った場合などに便利です。
     $input = file_get_contents('php://input');
     // 取得したJSON形式のデータをPHPの連想配列に変換します。
     $data = json_decode($input, true);
 
     // デコードしたデータからemailフィールドを取得します。フィールドが存在しない場合は空文字列を返します。同様に、nameフィールドも取得します。
+    // isset関数は、指定した変数が存在し、かつnullではないかどうかを確認します。ここでは、$data配列に'sub'というキーが存在するかどうかをチェックしています。
     $sub = isset($data['sub']) ? $data['sub'] : '';
     $email = isset($data['email']) ? $data['email'] : '';
     $name = isset($data['name']) ? $data['name'] : '';
@@ -48,7 +58,7 @@ $sql_create_users = "CREATE TABLE IF NOT EXISTS users(
 // SQLの実行
 $db->exec($sql_create_users);
 // google_accountsテーブル作成
-$sql_create_google_accounts = "CREATE TABLE google_accounts (
+$sql_create_google_accounts = "CREATE TABLE IF NOT EXISTS google_accounts (
     user_id INT PRIMARY KEY,
     google_id VARCHAR(255) UNIQUE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

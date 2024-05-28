@@ -62,6 +62,8 @@
       // Ajaxを使用
       var xhr = new XMLHttpRequest();
       // POSTメソッドでgoogle_login.phpにリクエストを送信
+      // POSTメソッドを使って、URLからデータを取得するリクエストを非同期で行うという設定を行っています。
+      // リクエストを初期化することで、次のステップとして、リクエストを送信し、サーバーからのレスポンスを受け取る準備が整います。
       xhr.open('POST', 'google_login.php', true);
       // setRequestHeaderメソッドは、リクエストヘッダーに指定した名前と値のペアを追加
       // Content-Typeは、HTTPヘッダーの一つで、リクエストボディのメディアタイプ（MIMEタイプ）を指定します。これにより、サーバーは受け取るデータの形式を理解できる
@@ -80,8 +82,11 @@
           console.error('Login failed: ' + xhr.responseText);
         }
       };
-      // emailとnameをJSON形式にエンコードしてリクエストボディに含める
+      // sub, emailとnameをJSON形式にエンコードしてリクエストボディに含める
+      // JSON.stringify は、JavaScriptのオブジェクトや配列をJSON形式の文字列に変換するメソッド
+      // ここでの sub は、オブジェクトのプロパティ名です。右側の sub は、変数名を指しています。例えば、変数 sub が "1234567890" という値を持っていれば、プロパティ sub の値も "1234567890" になります。
       var data = JSON.stringify({ sub: sub, email: email, name: name });
+      // sendメソッドは、XMLHttpRequestオブジェクトの一部で、リクエストをサーバーに送信するために使用されます。このメソッドは、オプションでリクエストの本文を受け取ることができます。
       xhr.send(data);
     }
   </script>
