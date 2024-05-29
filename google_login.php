@@ -46,24 +46,26 @@ try {
     //catch ブロックは、try ブロック内で例外（エラー）が発生した場合に実行。PDOException: PDOに関連するエラーをキャッチするための例外クラス（エラーを扱うための特別なクラス）。$e: 発生した例外のインスタンス（生成されたオブジェクト）を保持する変数。
 } catch (PDOException $e) {
     $msg = $e->getMessage();
+    echo json_encode(['status' => 'error', 'message' => $msg]);
+    exit();
 }
 
 // usersテーブル作成のSQL
-$sql_create_users = "CREATE TABLE IF NOT EXISTS users(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50),
-    mail VARCHAR(50),
-    pass VARCHAR(255)
-)";
+// $sql_create_users = "CREATE TABLE IF NOT EXISTS users(
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     name VARCHAR(50),
+//     mail VARCHAR(50),
+//     pass VARCHAR(255)
+// )";
 // SQLの実行
-$db->exec($sql_create_users);
-// google_accountsテーブル作成
-$sql_create_google_accounts = "CREATE TABLE IF NOT EXISTS google_accounts (
-    user_id INT PRIMARY KEY,
-    google_id VARCHAR(255) UNIQUE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-)";
-$db->exec($sql_create_google_accounts);
+// $db->exec($sql_create_users);
+// // google_accountsテーブル作成
+// $sql_create_google_accounts = "CREATE TABLE IF NOT EXISTS google_accounts (
+//     user_id INT PRIMARY KEY,
+//     google_id VARCHAR(255) UNIQUE NOT NULL,
+//     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+// )";
+// $db->exec($sql_create_google_accounts);
 
 // //フォームに入力されたmailがすでに登録されていないか検索
 // $sql_mail = "SELECT * FROM users WHERE mail = :mail";
