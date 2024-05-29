@@ -59,36 +59,28 @@
       sendLoginData(sub, email, name);
     }
     function sendLoginData(sub, email, name) {
-      // Ajaxを使用
-      var xhr = new XMLHttpRequest();
-      // POSTメソッドでgoogle_login.phpにリクエストを送信
-      // POSTメソッドを使って、URLからデータを取得するリクエストを非同期で行うという設定を行っています。
-      // リクエストを初期化することで、次のステップとして、リクエストを送信し、サーバーからのレスポンスを受け取る準備が整います。
-      xhr.open('POST', 'google_login.php', true);
-      // setRequestHeaderメソッドは、リクエストヘッダーに指定した名前と値のペアを追加
-      // Content-Typeは、HTTPヘッダーの一つで、リクエストボディのメディアタイプ（MIMEタイプ）を指定します。これにより、サーバーは受け取るデータの形式を理解できる
-      // 'application/json'は、データがJSON（JavaScript Object Notation）形式で送信されることを示します。
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      // onload は、XHRリクエストが完了したときに実行されるイベントハンドラです。このハンドラはリクエストが正常に完了（成功または失敗）した後に呼び出されます。
-      xhr.onload = function() {
-        // リクエストの完了後に返されるHTTPステータスコードです。200は、リクエストが成功したことを示します。
-        if (xhr.status === 200) {
-          // xhr.responseText には、サーバーからのレスポンスデータが含まれています。
-          console.log('Login successful: ' + xhr.responseText);
-          // ログイン成功後にgoogle_login_display.phpにリダイレクト
-          // window.location.href を設定することで、現在のページから新しいページに移動します。
-          window.location.href = 'google_login.php';
-        } else {
-          console.error('Login failed: ' + xhr.responseText);
-        }
-      };
-      // sub, emailとnameをJSON形式にエンコードしてリクエストボディに含める
-      // JSON.stringify は、JavaScriptのオブジェクトや配列をJSON形式の文字列に変換するメソッド
-      // ここでの sub は、オブジェクトのプロパティ名です。右側の sub は、変数名を指しています。例えば、変数 sub が "1234567890" という値を持っていれば、プロパティ sub の値も "1234567890" になります。
-      var data = JSON.stringify({ sub: sub, email: email, name: name });
-      // sendメソッドは、XMLHttpRequestオブジェクトの一部で、リクエストをサーバーに送信するために使用されます。このメソッドは、オプションでリクエストの本文を受け取ることができます。
-      xhr.send(data);
+      // セッションストレージにデータを保存: セッションストレージはブラウザのタブごとにデータを保存し、タブが閉じられるとデータが削除されます。
+      sessionStorage.setItem('sub', sub);
+      sessionStorage.setItem('email', email);
+      sessionStorage.setItem('name', name);
+
+      // ページ遷移
+      window.location.href = 'google_login.php';
     }
+
+    // ページがロードされたときにGoogleの認証サービスを初期化します。
+    window.onload = function() {
+      google.accounts.id.initialize({
+        client_id: '67399827703-oqqaicvrrvg0je78cu8hh43fn6rd7rhd.apps.googleusercontent.com',
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.getElementById('g_id_signin'),
+        { theme: 'outline', size: 'large' }
+      );
+      google.accounts.id.prompt(); // 認証ウィジェットを表示
+    };
+
   </script>
 </div>
 </form>
