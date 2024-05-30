@@ -103,6 +103,27 @@ try {
 // ログイン成功後のページ表示
 $email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
 $name = isset($_SESSION['name']) ? $_SESSION['name'] : '';
+
+
+// 避難場所
+// // データが存在する場合、セッションに保存
+// if (isset($data['email']) && isset($data['name'])) {
+// 	$_SESSION['sub'] = $data['sub'];
+//   $_SESSION['email'] = $data['email'];
+//   $_SESSION['name'] = $data['name'];
+
+//   // レスポンスとしてJSON形式のデータを返す
+//   echo json_encode([
+//     'status' => 'success',
+// 		'sub' => $_SESSION['sub'],
+//     'email' => $_SESSION['email'],
+//     'name' => $_SESSION['name']
+//   ]);
+// } else {
+//   // エラーレスポンスを返す
+//   echo json_encode(['status' => 'error', 'message' => 'Invalid data']);
+// }
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">

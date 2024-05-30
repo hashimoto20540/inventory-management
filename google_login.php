@@ -4,25 +4,12 @@ session_start();
 
 // クライアントからのPOSTリクエストを受け取る
 $input = file_get_contents('php://input');
+
+// 取得したデータを表示（デバッグ用）
+echo "Raw input: " . $input . "\n";
+
 $data = json_decode($input, true);
 
-// データが存在する場合、セッションに保存
-if (isset($data['email']) && isset($data['name'])) {
-	$_SESSION['sub'] = $data['sub'];
-  $_SESSION['email'] = $data['email'];
-  $_SESSION['name'] = $data['name'];
-
-  // レスポンスとしてJSON形式のデータを返す
-  echo json_encode([
-    'status' => 'success',
-		'sub' => $_SESSION['sub'],
-    'email' => $_SESSION['email'],
-    'name' => $_SESSION['name']
-  ]);
-} else {
-  // エラーレスポンスを返す
-  echo json_encode(['status' => 'error', 'message' => 'Invalid data']);
-}
 ?>
 
 <!DOCTYPE html>
@@ -41,10 +28,12 @@ window.onload = function() {
   const sub = sessionStorage.getItem('sub');
   const email = sessionStorage.getItem('email');
   const name = sessionStorage.getItem('name');
-
+  console.log(sub);
+  console.log(email);
+  console.log(name);
   // データをサーバーに送信する関数
   function sendDataToServer(sub, email, name) {
-    fetch('receiver.php', {
+    fetch('google_login.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -58,9 +47,6 @@ window.onload = function() {
     .then(response => response.json())
     .then(data => {
       console.log('Success:', data);
-      // データをHTMLに表示（必要に応じて）
-    //   document.getElementById('email').textContent = data.email;
-    //   document.getElementById('name').textContent = data.name;
     })
     .catch((error) => {
       console.error('Error:', error);
