@@ -15,7 +15,8 @@ XAMPPのhtdocsディレクトリー（C:\xampp\htdocs）にinventory-management�
 - ユーザー登録画面<br>
 - ログイン画面<br>
 - ホーム画面<br>
-- 未ログインだとログイン画面にリダイレクト
+- 未ログインだとログイン画面にリダイレクト<br>
+- Googleアカウントでログイン機能を追加
 
 ## 使用技術<br>
 ### 使用アプリ・言語
@@ -74,3 +75,9 @@ https://www.tutorialrepublic.com/php-tutorial/php-mysql-ajax-live-search.php<br>
 https://www.php.net/manual/ja/language.types.string.php<br>
 - Ajax（jQuery）での通信中にローディング画像を表示する<br>
 https://qiita.com/dkmrkm/items/4aa1a457dd26806e9008<br>
+- クライアント ライブラリを読み込む<br>
+https://developers.google.com/identity/gsi/web/guides/client-library?hl=ja<br>
+- Googleアカウントで認証エリアにログインさせるサンプルプログラム<br>
+https://knowledge.spirers.jp/article/development/detail/7348<br>
+- WEBページに「Googleアカウントでログイン」を実装する<br>
+https://qiita.com/kmtym1998/items/768212fe92dbaa384c27
