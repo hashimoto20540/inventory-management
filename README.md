@@ -14,9 +14,8 @@ XAMPPのhtdocsディレクトリー（C:\xampp\htdocs）にinventory-management�
 ### ログイン機能<br>
 - ユーザー登録画面<br>
 - ログイン画面<br>
-- ホーム画面<br>
 - 未ログインだとログイン画面にリダイレクト<br>
-- Googleアカウントでログイン機能を追加
+- Googleアカウントでログイン
 
 ## 使用技術<br>
 ### 使用アプリ・言語
