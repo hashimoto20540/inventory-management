@@ -79,4 +79,6 @@ https://developers.google.com/identity/gsi/web/guides/client-library?hl=ja<br>
 - Googleアカウントで認証エリアにログインさせるサンプルプログラム<br>
 https://knowledge.spirers.jp/article/development/detail/7348<br>
 - WEBページに「Googleアカウントでログイン」を実装する<br>
-https://qiita.com/kmtym1998/items/768212fe92dbaa384c27
+https://qiita.com/kmtym1998/items/768212fe92dbaa384c27<br>
+-googleでログインを実装<br>
+https://nakanishi-s.jp/google%E3%81%A7%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%82%92%E5%AE%9F%E8%A3%85/<br>
