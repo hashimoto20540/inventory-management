@@ -86,6 +86,7 @@ https://nakanishi-s.jp/google%E3%81%A7%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%82
 
 ## 参考画像<br>
 ![スクリーンショット 2024-11-07 080004](https://github.com/user-attachments/assets/77d90161-97d6-4510-8d7b-71908ce96758)
+![スクリーンショット 2024-11-07 080046](https://github.com/user-attachments/assets/2c0309cc-0b25-4b65-b70c-7fd8d1c54525)
 ![スクリーンショット 2024-11-07 080103](https://github.com/user-attachments/assets/171697bd-b317-4e10-8238-9ebe198673fe)
 ![スクリーンショット 2024-11-07 080134](https://github.com/user-attachments/assets/0bcdc117-ddf8-46c6-8e08-b36b12e6ae43)
 ![スクリーンショット 2024-11-07 080227](https://github.com/user-attachments/assets/0a8e1b0f-ae90-47f9-80ba-fa5ac7388bf9)![スクリーンショット 2024-11-07 080242](https://github.com/user-attachments/assets/aaca86ef-288b-4a03-aacc-32680f688094)
